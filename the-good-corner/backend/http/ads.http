@@ -17,3 +17,7 @@ Content-Type: application/json
     "location": "Reims",
 "createdAt": "2024-02-27T10:17:15.922Z"
   }
+
+###
+
+DELETE http://localhost:5000/ads/2
