@@ -61,18 +61,9 @@ app.post("/ads", (req, res) => {
 
 app.delete("/ads/:idToDelete", (req, res) => {
   console.log("req params", req.params.idToDelete);
-  db.run(
-    "DELETE FROM ad WHERE id = ?",
-    [req.params.idToDelete],
-    function (err) {
-      if (err) {
-        console.error(err.message);
-        res.sendStatus(500);
-        return;
-      }
-      res.json("Ad Deleted");
-    }
-  );
+  const stmt = db.prepare("DELETE FROM ad WHERE id = ?");
+  stmt.run([req.params.idToDelete]);
+  res.send("Ad deleted");
 });
 
 app.put("/ads/:idToUpdate", (req, res) => {

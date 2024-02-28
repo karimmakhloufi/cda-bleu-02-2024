@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5000/ads/7
+DELETE http://localhost:5000/ads/8
 
 ###
 
