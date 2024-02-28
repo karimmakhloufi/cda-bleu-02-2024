@@ -67,14 +67,32 @@ app.delete("/ads/:idToDelete", (req, res) => {
 });
 
 app.put("/ads/:idToUpdate", (req, res) => {
-  ads = ads.map((ad) => {
-    if (ad.id === Number.parseInt(req.params.idToUpdate)) {
-      return req.body;
-    } else {
-      return ad;
+  db.all(
+    "SELECT * FROM ad WHERE id = ?",
+    [req.params.idToUpdate],
+    (err, rows) => {
+      const originalAd = rows[0] as {
+        title?: string;
+        description?: string;
+        owner?: string;
+        price?: number;
+        ville?: string;
+      };
+      console.log("original ad ", originalAd);
+      const stmt = db.prepare(
+        "UPDATE ad SET title = ?, description = ?, owner = ?, price = ?, ville = ? WHERE id = ?"
+      );
+      stmt.run([
+        req.body.title ? req.body.title : originalAd.title,
+        req.body.description ? req.body.description : originalAd.description,
+        req.body.owner ? req.body.owner : originalAd.description,
+        req.body.price ? req.body.price : originalAd.price,
+        req.body.location ? req.body.location : originalAd.ville,
+        req.params.idToUpdate,
+      ]);
+      res.send("Ad has been updated");
     }
-  });
-  res.send("Ad has been updated");
+  );
 });
 
 app.listen(port, () => {
