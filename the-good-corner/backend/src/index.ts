@@ -42,20 +42,37 @@ app.get("/ads", (req, res) => {
   db.all("SELECT * FROM ad", (err, rows) => {
     res.send(rows);
   });
-  // res.send(ads);
 });
 
 app.post("/ads", (req, res) => {
   console.log("req body", req.body);
-  ads.push(req.body);
-  console.log("test");
+  const stmt = db.prepare(
+    "INSERT INTO ad (title, description, owner, price, ville ) VALUES (?,?,?,?,?)"
+  );
+  stmt.run([
+    req.body.title,
+    req.body.description,
+    req.body.owner,
+    req.body.price,
+    req.body.location,
+  ]);
   res.send("Ad has been added");
 });
 
 app.delete("/ads/:idToDelete", (req, res) => {
   console.log("req params", req.params.idToDelete);
-  ads = ads.filter((ad) => ad.id !== Number.parseInt(req.params.idToDelete));
-  res.send("ad has been removed");
+  db.run(
+    "DELETE FROM ad WHERE id = ?",
+    [req.params.idToDelete],
+    function (err) {
+      if (err) {
+        console.error(err.message);
+        res.sendStatus(500);
+        return;
+      }
+      res.json("Ad Deleted");
+    }
+  );
 });
 
 app.put("/ads/:idToUpdate", (req, res) => {

@@ -6,8 +6,7 @@ POST http://localhost:5000/ads
 Content-Type: application/json
 
 {
-    "id": 3,
-    "title": "Skateboard to sell",
+    "title": "205 a vendre",
     "description":
       "My skateboard is green, working fine. I'm selling it because I've got a new one",
     "owner": "skateboard.seller@gmail.com",
@@ -20,7 +19,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5000/ads/2
+DELETE http://localhost:5000/ads/7
 
 ###
 
