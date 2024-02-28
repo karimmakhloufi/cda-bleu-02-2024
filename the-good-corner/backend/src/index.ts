@@ -1,4 +1,7 @@
 import express from "express";
+import sqlite3 from "sqlite3";
+
+const db = new sqlite3.Database("the_good_corner.sqlite");
 
 let ads = [
   {
@@ -36,7 +39,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/ads", (req, res) => {
-  res.send(ads);
+  db.all("SELECT * FROM ad", (err, rows) => {
+    res.send(rows);
+  });
+  // res.send(ads);
 });
 
 app.post("/ads", (req, res) => {
