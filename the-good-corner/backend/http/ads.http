@@ -14,7 +14,8 @@ Content-Type: application/json
     "picture":
       "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
     "location": "Reims",
-"createdAt": "2024-02-27T10:17:15.922Z"
+  "createdAt": "2024-02-27T10:17:15.922Z",
+  "categoryId": 1
   }
 
 ###
