@@ -1,5 +1,6 @@
 import express from "express";
 import sqlite3 from "sqlite3";
+import { dataSource } from "./config/db";
 
 const db = new sqlite3.Database("the_good_corner.sqlite");
 
@@ -9,12 +10,12 @@ const app = express();
 app.use(express.json());
 const port = 5000;
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("Hello World on port 5000!");
 });
 
-app.get("/ads", (req, res) => {
-  db.all("SELECT * FROM ad", (err, rows) => {
+app.get("/ads", (_req, res) => {
+  db.all("SELECT * FROM ad", (_err, rows) => {
     res.send(rows);
   });
 });
@@ -55,7 +56,7 @@ app.put("/ads/:idToUpdate", (req, res) => {
   db.all(
     "SELECT * FROM ad WHERE id = ?",
     [req.params.idToUpdate],
-    (err, rows) => {
+    (_err, rows) => {
       const originalAd = rows[0] as {
         title?: string;
         description?: string;
@@ -80,6 +81,7 @@ app.put("/ads/:idToUpdate", (req, res) => {
   );
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await dataSource.initialize();
   console.log(`Example app listening on port ${port}`);
 });
