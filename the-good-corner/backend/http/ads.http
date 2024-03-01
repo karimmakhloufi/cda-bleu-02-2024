@@ -20,14 +20,13 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:5000/ads/15
+DELETE http://localhost:5000/ads/1
 
 ###
 
-PUT http://localhost:5000/ads/17
+PUT http://localhost:5000/ads/1
 Content-Type: application/json
 
 {
-   "location": "Marseille",
-   "price": 180
+  "title": "new title 2"
 }

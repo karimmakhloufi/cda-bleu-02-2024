@@ -1,11 +1,6 @@
 import express from "express";
-import sqlite3 from "sqlite3";
 import { dataSource } from "./config/db";
 import { Ad } from "./entities/ad";
-
-const db = new sqlite3.Database("the_good_corner.sqlite");
-
-// db.get("PRAGMA foreign_keys = ON");
 
 const app = express();
 app.use(express.json());
@@ -44,40 +39,34 @@ app.post("/ads", async (req, res) => {
   }
 });
 
-app.delete("/ads/:idToDelete", (req, res) => {
-  console.log("req params", req.params.idToDelete);
-  const stmt = db.prepare("DELETE FROM ad WHERE id = ?");
-  stmt.run([req.params.idToDelete]);
-  res.send("Ad deleted");
+app.delete("/ads/:idToDelete", async (req, res) => {
+  try {
+    await Ad.delete(req.params.idToDelete);
+    res.send("Ad deleted");
+  } catch (err) {
+    console.log("error", err);
+    res.send("an error has occured");
+  }
 });
 
-app.put("/ads/:idToUpdate", (req, res) => {
-  db.all(
-    "SELECT * FROM ad WHERE id = ?",
-    [req.params.idToUpdate],
-    (_err, rows) => {
-      const originalAd = rows[0] as {
-        title?: string;
-        description?: string;
-        owner?: string;
-        price?: number;
-        ville?: string;
-      };
-      console.log("original ad ", originalAd);
-      const stmt = db.prepare(
-        "UPDATE ad SET title = ?, description = ?, owner = ?, price = ?, ville = ? WHERE id = ?"
-      );
-      stmt.run([
-        req.body.title ? req.body.title : originalAd.title,
-        req.body.description ? req.body.description : originalAd.description,
-        req.body.owner ? req.body.owner : originalAd.description,
-        req.body.price ? req.body.price : originalAd.price,
-        req.body.location ? req.body.location : originalAd.ville,
-        req.params.idToUpdate,
-      ]);
-      res.send("Ad has been updated");
+app.put("/ads/:idToUpdate", async (req, res) => {
+  try {
+    /*
+    const adToUpdate = await Ad.findOneByOrFail({
+      id: Number.parseInt(req.params.idToUpdate),
+    });
+    console.log("adToUpdate", adToUpdate);
+    if (req.body.title) {
+      adToUpdate.title = req.body.title;
     }
-  );
+    await adToUpdate.save();
+    */
+    await Ad.update({ id: parseInt(req.params.idToUpdate) }, req.body);
+    res.send("ad updated");
+  } catch (err) {
+    console.log(err);
+    res.send("an error has occured");
+  }
 });
 
 app.listen(port, async () => {
