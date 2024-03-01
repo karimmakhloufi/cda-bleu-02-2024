@@ -1,6 +1,7 @@
 import express from "express";
 import sqlite3 from "sqlite3";
 import { dataSource } from "./config/db";
+import { Ad } from "./entities/ad";
 
 const db = new sqlite3.Database("the_good_corner.sqlite");
 
@@ -14,10 +15,13 @@ app.get("/", (_req, res) => {
   res.send("Hello World on port 5000!");
 });
 
-app.get("/ads", (_req, res) => {
-  db.all("SELECT * FROM ad", (_err, rows) => {
-    res.send(rows);
-  });
+app.get("/ads", async (_req, res) => {
+  try {
+    const ads = await Ad.find();
+    res.status(200).send(ads);
+  } catch (err) {
+    res.status(500).send("an error has occured");
+  }
 });
 
 app.post("/ads", (req, res) => {
