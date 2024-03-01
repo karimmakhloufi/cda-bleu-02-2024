@@ -1,3 +1,4 @@
+import { validate } from "class-validator";
 import express from "express";
 import { dataSource } from "./config/db";
 import { Ad } from "./entities/ad";
@@ -26,9 +27,14 @@ app.post("/ads", async (req, res) => {
     const ad = Ad.create(req.body);
     // [1,2] -> [{id: 1}, {id: 2}]
     ad.tags = req.body.tags.map((el: number) => ({ id: el }));
-    await ad.save();
-
-    res.send("Ad has been created");
+    const errors = await validate(ad);
+    if (errors.length > 0) {
+      console.log("validation errors", errors);
+      throw new Error(`Validation failed!`);
+    } else {
+      await ad.save();
+      res.send("Ad has been created");
+    }
   } catch (err) {
     console.log("error", err);
     res.status(500).send("an error has occured");

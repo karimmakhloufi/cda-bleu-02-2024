@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Category } from "./category";
 import { Tag } from "./tag";
+import { Length } from "class-validator";
 
 @Entity()
 export class Ad extends BaseEntity {
@@ -16,6 +17,7 @@ export class Ad extends BaseEntity {
   id: number;
 
   @Column()
+  @Length(10, 20)
   title: string;
 
   @Column()

@@ -6,7 +6,7 @@ POST http://localhost:5000/ads
 Content-Type: application/json
 
 {
-    "title": "207 a vendre",
+    "title": "ce titre est trop long et va provoquer une erreur de validation",
     "description":
       "My skateboard is green, working fine. I'm selling it because I've got a new one",
     "owner": "skateboard.seller@gmail.com",
