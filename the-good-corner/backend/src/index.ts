@@ -2,6 +2,7 @@ import express from "express";
 import { dataSource } from "./config/db";
 import { Ad } from "./entities/ad";
 import { Category } from "./entities/category";
+import { Tag } from "./entities/tag";
 
 const app = express();
 app.use(express.json());
@@ -13,7 +14,7 @@ app.get("/", (_req, res) => {
 
 app.get("/ads", async (_req, res) => {
   try {
-    const ads = await Ad.find({ relations: { category: true } });
+    const ads = await Ad.find({ relations: { category: true, tags: true } });
     res.status(200).send(ads);
   } catch (err) {
     res.status(500).send("an error has occured");
@@ -21,21 +22,12 @@ app.get("/ads", async (_req, res) => {
 });
 
 app.post("/ads", async (req, res) => {
-  // console.log("req body", req.body);
   try {
-    /*
-    const ad = new Ad();
-    ad.description = req.body.description;
-    ad.owner = req.body.owner;
-    ad.price = req.body.price;
-    ad.title = req.body.title;
-    ad.ville = req.body.location;
-    await ad.save();
-    */
-
     const ad = Ad.create(req.body);
-
+    // [1,2] -> [{id: 1}, {id: 2}]
+    ad.tags = req.body.tags.map((el: number) => ({ id: el }));
     await ad.save();
+
     res.send("Ad has been created");
   } catch (err) {
     console.log("error", err);
@@ -55,16 +47,6 @@ app.delete("/ads/:idToDelete", async (req, res) => {
 
 app.put("/ads/:idToUpdate", async (req, res) => {
   try {
-    /*
-    const adToUpdate = await Ad.findOneByOrFail({
-      id: Number.parseInt(req.params.idToUpdate),
-    });
-    console.log("adToUpdate", adToUpdate);
-    if (req.body.title) {
-      adToUpdate.title = req.body.title;
-    }
-    await adToUpdate.save();
-    */
     await Ad.update({ id: parseInt(req.params.idToUpdate) }, req.body);
     res.send("ad updated");
   } catch (err) {
@@ -87,6 +69,15 @@ app.post("/categories", async (req, res) => {
   } catch (err) {
     console.log("error", err);
     res.status(500).send("an error has occured");
+  }
+});
+
+app.post("/tags", async (req, res) => {
+  try {
+    await Tag.save(req.body);
+    res.status(201).send("Tag has been created");
+  } catch (err) {
+    res.status(500).send("An error has occured");
   }
 });
 
