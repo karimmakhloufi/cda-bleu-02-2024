@@ -1,3 +1,4 @@
+import { Category } from "../entities/category";
 import { Ad } from "../entities/ad";
 import { DataSource } from "typeorm";
 
@@ -6,5 +7,5 @@ export const dataSource = new DataSource({
   database: "db.sqlite",
   synchronize: true,
   logging: ["error", "query"],
-  entities: [Ad],
+  entities: [Ad, Category],
 });

@@ -6,7 +6,7 @@ POST http://localhost:5000/ads
 Content-Type: application/json
 
 {
-    "title": "205 a vendre",
+    "title": "207 a vendre",
     "description":
       "My skateboard is green, working fine. I'm selling it because I've got a new one",
     "owner": "skateboard.seller@gmail.com",
@@ -15,7 +15,7 @@ Content-Type: application/json
       "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
     "ville": "Reims",
   "createdAt": "2024-02-27T10:17:15.922Z",
-  "categoryId": 1
+  "category": 2
   }
 
 ###

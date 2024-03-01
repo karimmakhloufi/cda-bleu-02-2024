@@ -1,6 +1,7 @@
 import express from "express";
 import { dataSource } from "./config/db";
 import { Ad } from "./entities/ad";
+import { Category } from "./entities/category";
 
 const app = express();
 app.use(express.json());
@@ -12,7 +13,7 @@ app.get("/", (_req, res) => {
 
 app.get("/ads", async (_req, res) => {
   try {
-    const ads = await Ad.find();
+    const ads = await Ad.find({ relations: { category: true } });
     res.status(200).send(ads);
   } catch (err) {
     res.status(500).send("an error has occured");
@@ -31,7 +32,10 @@ app.post("/ads", async (req, res) => {
     ad.ville = req.body.location;
     await ad.save();
     */
-    await Ad.save(req.body);
+
+    const ad = Ad.create(req.body);
+
+    await ad.save();
     res.send("Ad has been created");
   } catch (err) {
     console.log("error", err);
@@ -66,6 +70,23 @@ app.put("/ads/:idToUpdate", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.send("an error has occured");
+  }
+});
+
+app.get("/categories", async (_req, res) => {
+  try {
+    const categories = await Category.find({ relations: { ads: true } });
+    res.send(categories);
+  } catch (err) {}
+});
+
+app.post("/categories", async (req, res) => {
+  try {
+    await Category.save(req.body);
+    res.status(201).send("Category has been created");
+  } catch (err) {
+    console.log("error", err);
+    res.status(500).send("an error has occured");
   }
 });
 
