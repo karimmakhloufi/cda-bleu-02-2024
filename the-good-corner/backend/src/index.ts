@@ -5,7 +5,7 @@ import { Ad } from "./entities/ad";
 
 const db = new sqlite3.Database("the_good_corner.sqlite");
 
-db.get("PRAGMA foreign_keys = ON");
+// db.get("PRAGMA foreign_keys = ON");
 
 const app = express();
 app.use(express.json());
@@ -24,29 +24,24 @@ app.get("/ads", async (_req, res) => {
   }
 });
 
-app.post("/ads", (req, res) => {
+app.post("/ads", async (req, res) => {
   // console.log("req body", req.body);
-  const stmt = db.prepare(
-    "INSERT INTO ad (title, description, owner, price, ville, category_id ) VALUES (?,?,?,?,?,?)"
-  );
-  stmt.run(
-    [
-      req.body.title,
-      req.body.description,
-      req.body.owner,
-      req.body.price,
-      req.body.location,
-      req.body.categoryId,
-    ],
-    (err) => {
-      if (err) {
-        console.log("error");
-        res.status(500).send("An error has occured");
-      } else {
-        res.status(201).send("Ad has been added");
-      }
-    }
-  );
+  try {
+    /*
+    const ad = new Ad();
+    ad.description = req.body.description;
+    ad.owner = req.body.owner;
+    ad.price = req.body.price;
+    ad.title = req.body.title;
+    ad.ville = req.body.location;
+    await ad.save();
+    */
+    await Ad.save(req.body);
+    res.send("Ad has been created");
+  } catch (err) {
+    console.log("error", err);
+    res.status(500).send("an error has occured");
+  }
 });
 
 app.delete("/ads/:idToDelete", (req, res) => {
