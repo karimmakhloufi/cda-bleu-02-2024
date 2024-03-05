@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdCard, { AdCardProps } from "./AdCard";
 
 const ads: AdCardProps[] = [
@@ -41,10 +41,35 @@ const ads: AdCardProps[] = [
 ];
 
 const RecentAds = () => {
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(
+    localStorage.getItem("CART_TOTAL")
+      ? JSON.parse(localStorage.getItem("CART_TOTAL") as string)
+      : 0
+  );
+
+  const [time, setTime] = useState(new Date());
+
+  const everyRender = () => {
+    console.log("this will be displayed on every render");
+  };
+
+  everyRender();
+
+  useEffect(() => {
+    console.log("first render only or when time changes, but not total");
+    setTotal(12);
+  }, [time]);
   return (
     <>
       <h2>Annonces récentes</h2>
+      <p>Current Time {time.toLocaleTimeString()}</p>
+      <button
+        onClick={() => {
+          setTime(new Date());
+        }}
+      >
+        Update Time
+      </button>
       <p>Cout total: {total} €</p>
       <section className="recent-ads">
         {ads.map((ad) => (
@@ -59,6 +84,10 @@ const RecentAds = () => {
               className="button"
               onClick={() => {
                 setTotal(total + ad.price);
+                localStorage.setItem(
+                  "CART_TOTAL",
+                  JSON.stringify(total + ad.price)
+                );
               }}
             >
               Ajouter le prix au total
