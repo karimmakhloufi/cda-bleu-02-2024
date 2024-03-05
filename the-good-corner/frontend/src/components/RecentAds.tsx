@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AdCard, { AdCardProps } from "./AdCard";
 
 const ads: AdCardProps[] = [
@@ -40,18 +41,29 @@ const ads: AdCardProps[] = [
 ];
 
 const RecentAds = () => {
+  const [total, setTotal] = useState(0);
   return (
     <>
       <h2>Annonces récentes</h2>
+      <p>Cout total: {total} €</p>
       <section className="recent-ads">
         {ads.map((ad) => (
-          <AdCard
-            key={ad.title}
-            imgUrl={ad.imgUrl}
-            link={ad.link}
-            price={ad.price}
-            title={ad.title}
-          />
+          <div key={ad.title}>
+            <AdCard
+              imgUrl={ad.imgUrl}
+              link={ad.link}
+              price={ad.price}
+              title={ad.title}
+            />
+            <button
+              className="button"
+              onClick={() => {
+                setTotal(total + ad.price);
+              }}
+            >
+              Ajouter le prix au total
+            </button>
+          </div>
         ))}
       </section>
     </>
