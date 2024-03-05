@@ -41,7 +41,7 @@ const ads: AdCardProps[] = [
 
 const RecentAds = () => {
   return (
-    <main className="main-content">
+    <>
       <h2>Annonces récentes</h2>
       <section className="recent-ads">
         {ads.map((ad) => (
@@ -54,7 +54,7 @@ const RecentAds = () => {
           />
         ))}
       </section>
-    </main>
+    </>
   );
 };
 
