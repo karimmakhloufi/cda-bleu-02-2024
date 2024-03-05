@@ -1,12 +1,16 @@
+import Link from "next/link";
+import styles from "../styles/header.module.css";
+import NavBar from "./NavBar";
+
 const Header = () => {
   return (
-    <header className="header">
+    <header className={styles.header}>
       <div className="main-menu">
         <h1>
-          <a href="/" className="button logo link-button">
+          <Link href="/" className="button logo link-button">
             <span className="mobile-short-label">TGC</span>
             <span className="desktop-long-label">THE GOOD CORNER</span>
-          </a>
+          </Link>
         </h1>
         <form className="text-field-with-button">
           <input className="text-field main-search-field" type="search" />
@@ -31,59 +35,7 @@ const Header = () => {
           <span className="desktop-long-label">Publier une annonce</span>
         </a>
       </div>
-      <nav className="categories-navigation">
-        <a href="" className="category-navigation-link">
-          Ameublement
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Électroménager
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Photographie
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Informatique
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Téléphonie{" "}
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Vélos
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Véhicules
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Sport
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Habillement
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Bébé
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Outillage
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Services{" "}
-        </a>{" "}
-        •
-        <a href="" className="category-navigation-link">
-          Vacances
-        </a>
-      </nav>
+      <NavBar />
     </header>
   );
 };

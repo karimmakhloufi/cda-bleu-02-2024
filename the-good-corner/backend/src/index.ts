@@ -1,3 +1,4 @@
+import cors from "cors";
 import { validate } from "class-validator";
 import express from "express";
 import { dataSource } from "./config/db";
@@ -7,6 +8,7 @@ import { Tag } from "./entities/tag";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 const port = 5000;
 
 app.get("/", (_req, res) => {
