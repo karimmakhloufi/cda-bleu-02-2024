@@ -65,7 +65,7 @@ app.put("/ads/:idToUpdate", async (req, res) => {
 
 app.get("/categories", async (_req, res) => {
   try {
-    const categories = await Category.find({ relations: { ads: true } });
+    const categories = await Category.find();
     res.send(categories);
   } catch (err) {}
 });

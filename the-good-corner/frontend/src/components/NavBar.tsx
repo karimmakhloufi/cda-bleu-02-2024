@@ -1,59 +1,35 @@
+import axios from "axios";
 import styles from "../styles/navbar.module.css";
+import { useEffect, useState, Fragment } from "react";
+import Link from "next/link";
+
+type Category = { id: number; name: string };
 
 const NavBar = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const result = await axios.get<Category[]>(
+          "http://localhost:5000/categories"
+        );
+        setCategories(result.data);
+      } catch (err) {
+        console.log("err", err);
+      }
+    };
+    fetchCategories();
+  }, []);
   return (
     <nav className={styles.container}>
-      <a href="" className={styles.link}>
-        Ameublement
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Électroménager
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Photographie
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Informatique
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Téléphonie{" "}
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Vélos
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Véhicules
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Sport
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Habillement
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Bébé
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Outillage
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Services{" "}
-      </a>{" "}
-      •
-      <a href="" className={styles.link}>
-        Vacances
-      </a>
+      {categories.map((el, index) => (
+        <Fragment key={el.id}>
+          <Link href={`/category/${el.id}`} className={styles.link}>
+            {el.name}
+          </Link>
+          {index < categories.length - 1 ? <span> • </span> : null}
+        </Fragment>
+      ))}
     </nav>
   );
 };
