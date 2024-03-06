@@ -15,6 +15,18 @@ app.get("/", (_req, res) => {
   res.send("Hello World on port 5000!");
 });
 
+app.get("/ads/:adId", async (req, res) => {
+  try {
+    const result = await Ad.findOneByOrFail({
+      id: Number.parseInt(req.params.adId),
+    });
+    res.send(result);
+  } catch (err) {
+    console.log("error", err);
+    res.send("an error has occured");
+  }
+});
+
 app.get("/ads", async (_req, res) => {
   try {
     const ads = await Ad.find({ relations: { category: true, tags: true } });
