@@ -26,9 +26,12 @@ app.get("/ads", async (_req, res) => {
 
 app.post("/ads", async (req, res) => {
   try {
+    console.log("data from front form", req.body);
     const ad = Ad.create(req.body);
     // [1,2] -> [{id: 1}, {id: 2}]
-    ad.tags = req.body.tags.map((el: number) => ({ id: el }));
+    if (req.body.tags) {
+      ad.tags = req.body.tags.map((el: number) => ({ id: el }));
+    }
     const errors = await validate(ad);
     if (errors.length > 0) {
       console.log("validation errors", errors);

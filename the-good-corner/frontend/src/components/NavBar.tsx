@@ -3,7 +3,7 @@ import styles from "../styles/navbar.module.css";
 import { useEffect, useState, Fragment } from "react";
 import Link from "next/link";
 
-type Category = { id: number; name: string };
+export type Category = { id: number; name: string };
 
 const NavBar = () => {
   const [categories, setCategories] = useState<Category[]>([]);

@@ -17,7 +17,7 @@ export class Ad extends BaseEntity {
   id: number;
 
   @Column()
-  @Length(10, 20)
+  @Length(10, 100)
   title: string;
 
   @Column()
