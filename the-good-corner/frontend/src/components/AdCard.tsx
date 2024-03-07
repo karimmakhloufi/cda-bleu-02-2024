@@ -6,6 +6,7 @@ export type AdCardProps = {
   imgUrl: string;
   price: number;
   link: string;
+  description?: string;
 };
 
 const AdCard = ({ title, imgUrl, price, link }: AdCardProps) => {

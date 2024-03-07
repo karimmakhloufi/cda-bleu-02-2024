@@ -1,4 +1,7 @@
 GET http://localhost:5000/ads
+###
+
+GET http://localhost:5000/search/ads/205
 
 ###
 
@@ -35,3 +38,4 @@ Content-Type: application/json
 {
   "title": "new title 2"
 }
+

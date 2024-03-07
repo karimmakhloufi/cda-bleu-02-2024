@@ -1,8 +1,10 @@
 import Link from "next/link";
 import styles from "../styles/header.module.css";
 import NavBar from "./NavBar";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
   return (
     <header className={styles.header}>
       <div className="main-menu">
@@ -12,8 +14,22 @@ const Header = () => {
             <span className="desktop-long-label">THE GOOD CORNER</span>
           </Link>
         </h1>
-        <form className="text-field-with-button">
-          <input className="text-field main-search-field" type="search" />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form as HTMLFormElement);
+            const formJson = Object.fromEntries(formData.entries());
+            console.log(formJson);
+            router.push(`/search/${formJson.keywords}`);
+          }}
+          className="text-field-with-button"
+        >
+          <input
+            className="text-field main-search-field"
+            name="keywords"
+            type="search"
+          />
           <button className="button button-primary">
             <svg
               aria-hidden="true"

@@ -19,19 +19,14 @@ const AdDetails = () => {
   console.log("fetch details from ad " + router.query.id);
   return (
     <>
-      <h2 className="ad-details-title">Table</h2>
+      <h2 className="ad-details-title">{ad?.title}</h2>
       <section className="ad-details">
         <div className="ad-details-image-container">
-          <img className="ad-details-image" src="/images/table.webp" />
+          <img className="ad-details-image" src={ad?.imgUrl} />
         </div>
         <div className="ad-details-info">
-          <div className="ad-details-price">120 €</div>
-          <div className="ad-details-description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, iusto!
-            Voluptates repudiandae asperiores quia. Blanditiis repellat minima
-            adipisci, aliquam nulla unde quam architecto eligendi, voluptatum,
-            perspiciatis laudantium sed eos voluptates?
-          </div>
+          <div className="ad-details-price">{ad?.price} €</div>
+          <div className="ad-details-description">{ad?.description}</div>
           <hr className="separator" />
           <div className="ad-details-owner">
             Annoncée publiée par <b>Serge</b> (9:32).
