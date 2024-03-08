@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AdCard, { AdCardProps } from "./AdCard";
+import { useRouter } from "next/router";
 
 const RecentAds = () => {
   const [total, setTotal] = useState(
@@ -8,6 +9,7 @@ const RecentAds = () => {
       ? JSON.parse(localStorage.getItem("CART_TOTAL") as string)
       : 0
   );
+  const router = useRouter();
 
   const [ads, setAds] = useState<AdCardProps[]>([]);
 
@@ -48,6 +50,24 @@ const RecentAds = () => {
               }}
             >
               Ajouter le prix au total
+            </button>
+            <button
+              className="button"
+              onClick={async () => {
+                try {
+                  await axios.delete(`http://localhost:5000/ads/${ad.id}`);
+                  try {
+                    const result = await axios.get<AdCardProps[]>(
+                      "http://localhost:5000/ads"
+                    );
+                    setAds(result.data);
+                  } catch (err) {}
+                } catch (err) {
+                  console.log("err", err);
+                }
+              }}
+            >
+              Delete
             </button>
           </div>
         ))}
