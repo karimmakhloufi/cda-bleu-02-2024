@@ -30,7 +30,7 @@ const AdDetails = () => {
           <div className="ad-details-description">{ad?.description}</div>
           <hr className="separator" />
           <div className="ad-details-owner">
-            Annoncée publiée par <b>Serge</b> (9:32).
+            Annoncée publiée par <b>{ad?.owner}</b>
           </div>
           <a
             href="mailto:serge@serge.com"

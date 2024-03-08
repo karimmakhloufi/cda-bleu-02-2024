@@ -107,6 +107,15 @@ app.post("/tags", async (req, res) => {
   }
 });
 
+app.get("/tags", async (_req, res) => {
+  try {
+    const result = await Tag.find();
+    res.send(result);
+  } catch (err) {
+    console.log("err", err);
+  }
+});
+
 app.listen(port, async () => {
   await dataSource.initialize();
   console.log(`Example app listening on port ${port}`);

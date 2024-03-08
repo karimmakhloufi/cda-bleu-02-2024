@@ -5,7 +5,7 @@ const adService = {
     try {
       const result = await Ad.find({
         where: { id: id },
-        relations: { category: true },
+        relations: { category: true, tags: true },
       });
       console.log("result from getOneAdById", result);
       return result[0];

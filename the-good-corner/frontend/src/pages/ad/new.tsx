@@ -1,9 +1,16 @@
 import { Category } from "@/components/NavBar";
-import axios from "axios";
+import axios, { formToJSON } from "axios";
 import { useEffect, useState } from "react";
+
+type Tag = {
+  id: number;
+  name: string;
+};
 
 const NewAd = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  let tagsArray: number[] = [];
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -16,6 +23,15 @@ const NewAd = () => {
       }
     };
     fetchCategories();
+    const fetchTags = async () => {
+      try {
+        const result = await axios.get<Tag[]>("http://localhost:5000/tags");
+        setTags(result.data);
+      } catch (err) {
+        console.log("err", err);
+      }
+    };
+    fetchTags();
   }, []);
   return (
     <form
@@ -24,10 +40,11 @@ const NewAd = () => {
 
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        console.log("formdata entries", formData.entries());
+        // console.log("formdata entries", formData.entries());
 
-        const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
+        const formJson: any = Object.fromEntries(formData.entries());
+        formJson.tags = tagsArray;
+        console.log("formjson", formJson);
         axios.post("http://localhost:5000/ads", formJson);
       }}
     >
@@ -68,6 +85,24 @@ const NewAd = () => {
           </option>
         ))}
       </select>
+      <legend>Tags:</legend>
+      {tags.map((el) => (
+        <div key={el.id}>
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              console.log(el.name + " " + e.target.checked);
+              if (e.target.checked) {
+                tagsArray.push(el.id);
+              } else {
+                tagsArray = tagsArray.filter((tag) => tag !== el.id);
+              }
+              console.log(tagsArray);
+            }}
+          />
+          <label>{el.name}</label>
+        </div>
+      ))}
       <button className="button">Submit</button>
     </form>
   );
