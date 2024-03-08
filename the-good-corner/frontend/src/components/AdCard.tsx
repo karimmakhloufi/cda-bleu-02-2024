@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Category } from "./NavBar";
 
 export type AdCardProps = {
   id?: number;
@@ -7,6 +8,9 @@ export type AdCardProps = {
   price: number;
   link: string;
   description?: string;
+  owner?: string;
+  ville?: string;
+  category?: Category;
 };
 
 const AdCard = ({ title, imgUrl, price, link }: AdCardProps) => {

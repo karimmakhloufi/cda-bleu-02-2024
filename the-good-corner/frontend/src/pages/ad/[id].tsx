@@ -1,5 +1,6 @@
 import { AdCardProps } from "@/components/AdCard";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -50,6 +51,12 @@ const AdDetails = () => {
             </svg>
             Envoyer un email
           </a>
+          <Link
+            href={`/ad/edit/${ad?.id}`}
+            className="button button-primary link-button"
+          >
+            Modifier
+          </Link>
         </div>
       </section>
     </>
