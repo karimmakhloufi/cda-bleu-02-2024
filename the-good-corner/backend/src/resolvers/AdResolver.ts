@@ -1,8 +1,17 @@
+import { Category } from "../entities/category";
 import { Ad } from "../entities/ad";
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Field,
+  ID,
+  InputType,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 
 @InputType()
-class NewAdInput {
+class NewAdInput implements Partial<Ad> {
   @Field()
   title: string;
 
@@ -17,6 +26,9 @@ class NewAdInput {
 
   @Field()
   ville: string;
+
+  @Field(() => ID)
+  category: Category;
 }
 
 @Resolver(Ad)
@@ -30,8 +42,12 @@ class AdResolver {
   @Mutation(() => Ad)
   async createNewAd(@Arg("data") newAdData: NewAdInput) {
     console.log("new ad data", newAdData);
-    const result = await Ad.save({ ...newAdData });
-    return result;
+    const resultFromSave = await Ad.save({ ...newAdData });
+    const resultForApi = await Ad.find({
+      relations: { category: true },
+      where: { id: resultFromSave.id },
+    });
+    return resultForApi[0];
   }
 }
 
