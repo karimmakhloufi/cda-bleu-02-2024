@@ -1,13 +1,39 @@
-import cors from "cors";
-import { validate } from "class-validator";
-import express from "express";
+import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import AdResolver from "./resolvers/AdResolver";
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 import { dataSource } from "./config/db";
-import { Ad } from "./entities/ad";
-import { Category } from "./entities/category";
-import { Tag } from "./entities/tag";
-import adController from "./controllers/adController";
-import { ILike } from "typeorm";
 
+// import cors from "cors";
+// import { validate } from "class-validator";
+// import express from "express";
+// import { Ad } from "./entities/ad";
+// import { Category } from "./entities/category";
+// import { Tag } from "./entities/tag";
+// import adController from "./controllers/adController";
+// import { ILike } from "typeorm";
+
+console.log("hello world");
+
+const start = async () => {
+  await dataSource.initialize();
+  const schema = await buildSchema({
+    resolvers: [AdResolver],
+  });
+
+  const server = new ApolloServer({ schema });
+
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+  });
+
+  console.log(`🚀  Server ready at: ${url}`);
+};
+
+start();
+
+/*
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -120,3 +146,5 @@ app.listen(port, async () => {
   await dataSource.initialize();
   console.log(`Example app listening on port ${port}`);
 });
+
+*/
