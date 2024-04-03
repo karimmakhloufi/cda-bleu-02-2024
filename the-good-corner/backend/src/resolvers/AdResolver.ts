@@ -23,7 +23,7 @@ class NewAdInput {
 class AdResolver {
   @Query(() => [Ad])
   async getAllAds() {
-    const ads = await Ad.find();
+    const ads = await Ad.find({ relations: { category: true } });
     return ads;
   }
 
