@@ -5,6 +5,7 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
+import TagResolver from "./resolvers/TagResolver";
 
 // import cors from "cors";
 // import { validate } from "class-validator";
@@ -18,7 +19,7 @@ import CategoryResolver from "./resolvers/CategoryResolver";
 const start = async () => {
   await dataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [AdResolver, CategoryResolver],
+    resolvers: [AdResolver, CategoryResolver, TagResolver],
   });
 
   const server = new ApolloServer({ schema });

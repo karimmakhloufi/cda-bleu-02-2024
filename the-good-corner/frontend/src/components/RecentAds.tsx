@@ -3,7 +3,7 @@ import AdCard, { AdCardProps } from "./AdCard";
 import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
 
-const GET_ALL_ADS = gql`
+export const GET_ALL_ADS = gql`
   query GetAllAds {
     getAllAds {
       id

@@ -1,51 +1,61 @@
-import { Category } from "@/components/NavBar";
-import axios, { formToJSON } from "axios";
-import { useEffect, useState } from "react";
+import { GET_ALL_ADS } from "../../components/RecentAds";
+import { gql, useQuery, useMutation } from "@apollo/client";
 
-type Tag = {
-  id: number;
-  name: string;
-};
+export const GET_ALL_CATEGORIES_AND_TAGS = gql`
+  query GetAllCategoriesAndTags {
+    getAllCategories {
+      id
+      name
+    }
+    getAllTags {
+      id
+      name
+    }
+  }
+`;
+
+const CREATE_NEW_AD = gql`
+  mutation Mutation($data: NewAdInput!) {
+    createNewAd(data: $data) {
+      id
+    }
+  }
+`;
 
 const NewAd = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const { loading, error, data } = useQuery(GET_ALL_CATEGORIES_AND_TAGS);
+  const [
+    createNewAd,
+    { data: createAdData, loading: createAdLoading, error: createAdError },
+  ] = useMutation(CREATE_NEW_AD, {
+    refetchQueries: [{ query: GET_ALL_ADS }],
+  });
   let tagsArray: number[] = [];
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await axios.get<Category[]>(
-          "http://localhost:5000/categories"
-        );
-        setCategories(result.data);
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-    fetchCategories();
-    const fetchTags = async () => {
-      try {
-        const result = await axios.get<Tag[]>("http://localhost:5000/tags");
-        setTags(result.data);
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-    fetchTags();
-  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+  console.log("data", data);
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
 
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        // console.log("formdata entries", formData.entries());
 
         const formJson: any = Object.fromEntries(formData.entries());
+        formJson.price = parseInt(formJson.price);
         formJson.tags = tagsArray;
+        if (formJson.imgUrl.length === 0) {
+          delete formJson.imgUrl;
+        }
         console.log("formjson", formJson);
-        axios.post("http://localhost:5000/ads", formJson);
+        const result = await createNewAd({
+          variables: {
+            data: formJson,
+          },
+        });
+        console.log("result", result);
       }}
     >
       <label>
@@ -79,14 +89,14 @@ const NewAd = () => {
       </label>
       <br />
       <select name="category">
-        {categories.map((el) => (
+        {data.getAllCategories.map((el: any) => (
           <option value={el.id} key={el.id}>
             {el.name}
           </option>
         ))}
       </select>
       <legend>Tags:</legend>
-      {tags.map((el) => (
+      {data.getAllTags.map((el: any) => (
         <div key={el.id}>
           <input
             type="checkbox"

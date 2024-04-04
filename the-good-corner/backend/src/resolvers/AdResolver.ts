@@ -9,6 +9,7 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
+import { Tag } from "src/entities/tag";
 
 @InputType()
 class NewAdInput implements Partial<Ad> {
@@ -24,11 +25,17 @@ class NewAdInput implements Partial<Ad> {
   @Field()
   price: number;
 
+  @Field(() => String, { nullable: true })
+  imgUrl?: string | undefined;
+
   @Field()
   ville: string;
 
   @Field(() => ID)
   category: Category;
+
+  @Field(() => [ID])
+  tags?: Tag[] | undefined;
 }
 
 @Resolver(Ad)
