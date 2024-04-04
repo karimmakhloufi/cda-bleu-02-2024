@@ -24,10 +24,13 @@ const CREATE_NEW_AD = gql`
 
 const NewAd = () => {
   const { loading, error, data } = useQuery(GET_ALL_CATEGORIES_AND_TAGS);
-  const [
-    createNewAd,
-    { data: createAdData, loading: createAdLoading, error: createAdError },
-  ] = useMutation(CREATE_NEW_AD, {
+  const [createNewAd] = useMutation(CREATE_NEW_AD, {
+    onCompleted(data) {
+      console.log("mutation completed data", data);
+    },
+    onError(error) {
+      console.log("error after executing mutation", error);
+    },
     refetchQueries: [{ query: GET_ALL_ADS }],
   });
   let tagsArray: number[] = [];
