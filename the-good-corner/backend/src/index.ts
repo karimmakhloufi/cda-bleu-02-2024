@@ -4,6 +4,7 @@ import AdResolver from "./resolvers/AdResolver";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { dataSource } from "./config/db";
+import CategoryResolver from "./resolvers/CategoryResolver";
 
 // import cors from "cors";
 // import { validate } from "class-validator";
@@ -14,12 +15,10 @@ import { dataSource } from "./config/db";
 // import adController from "./controllers/adController";
 // import { ILike } from "typeorm";
 
-console.log("hello world");
-
 const start = async () => {
   await dataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [AdResolver],
+    resolvers: [AdResolver, CategoryResolver],
   });
 
   const server = new ApolloServer({ schema });
