@@ -4,9 +4,12 @@ const config: CodegenConfig = {
   schema: "http://localhost:4000",
   documents: ["src/graphql/*.ts"],
   generates: {
-    "src/generated/gql/": {
-      preset: "client",
-      plugins: ["typescript", "typescript-react-apollo"],
+    "./src/generated/graphql-types.ts": {
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo",
+      ],
       config: {
         withHooks: true,
       },
