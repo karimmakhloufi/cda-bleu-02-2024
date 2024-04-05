@@ -1,18 +1,6 @@
+import { GET_ALL_CATEGORIES_AND_TAGS } from "../../graphql/queries";
 import { GET_ALL_ADS } from "../../components/RecentAds";
 import { gql, useQuery, useMutation } from "@apollo/client";
-
-export const GET_ALL_CATEGORIES_AND_TAGS = gql`
-  query GetAllCategoriesAndTags {
-    getAllCategories {
-      id
-      name
-    }
-    getAllTags {
-      id
-      name
-    }
-  }
-`;
 
 const CREATE_NEW_AD = gql`
   mutation Mutation($data: NewAdInput!) {
