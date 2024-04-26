@@ -46,6 +46,12 @@ class AdResolver {
     return ads;
   }
 
+  @Query(() => Ad)
+  async getAdById(@Arg("adId") adId: string) {
+    const ad = await Ad.findOneByOrFail({ id: Number.parseInt(adId) });
+    return ad;
+  }
+
   @Mutation(() => Ad)
   async createNewAd(@Arg("data") newAdData: NewAdInput) {
     console.log("new ad data", newAdData);

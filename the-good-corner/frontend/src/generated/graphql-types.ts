@@ -24,6 +24,7 @@ export type Ad = {
   id: Scalars['Float']['output'];
   imgUrl: Scalars['String']['output'];
   owner: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
   title: Scalars['String']['output'];
   ville: Scalars['String']['output'];
 };
@@ -58,9 +59,15 @@ export type NewAdInput = {
 
 export type Query = {
   __typename?: 'Query';
+  getAdById: Ad;
   getAllAds: Array<Ad>;
   getAllCategories: Array<Category>;
   getAllTags: Array<Tag>;
+};
+
+
+export type QueryGetAdByIdArgs = {
+  adId: Scalars['String']['input'];
 };
 
 export type Tag = {
@@ -73,6 +80,13 @@ export type GetAllCategoriesAndTagsQueryVariables = Exact<{ [key: string]: never
 
 
 export type GetAllCategoriesAndTagsQuery = { __typename?: 'Query', getAllCategories: Array<{ __typename?: 'Category', id: number, name: string }>, getAllTags: Array<{ __typename?: 'Tag', id: number, name: string }> };
+
+export type GetAdByIdQueryVariables = Exact<{
+  adId: Scalars['String']['input'];
+}>;
+
+
+export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, ville: string, imgUrl: string, price: number } };
 
 
 export const GetAllCategoriesAndTagsDocument = gql`
@@ -119,3 +133,49 @@ export type GetAllCategoriesAndTagsQueryHookResult = ReturnType<typeof useGetAll
 export type GetAllCategoriesAndTagsLazyQueryHookResult = ReturnType<typeof useGetAllCategoriesAndTagsLazyQuery>;
 export type GetAllCategoriesAndTagsSuspenseQueryHookResult = ReturnType<typeof useGetAllCategoriesAndTagsSuspenseQuery>;
 export type GetAllCategoriesAndTagsQueryResult = Apollo.QueryResult<GetAllCategoriesAndTagsQuery, GetAllCategoriesAndTagsQueryVariables>;
+export const GetAdByIdDocument = gql`
+    query GetAdById($adId: String!) {
+  getAdById(adId: $adId) {
+    id
+    title
+    description
+    owner
+    ville
+    imgUrl
+    price
+  }
+}
+    `;
+
+/**
+ * __useGetAdByIdQuery__
+ *
+ * To run a query within a React component, call `useGetAdByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAdByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAdByIdQuery({
+ *   variables: {
+ *      adId: // value for 'adId'
+ *   },
+ * });
+ */
+export function useGetAdByIdQuery(baseOptions: Apollo.QueryHookOptions<GetAdByIdQuery, GetAdByIdQueryVariables> & ({ variables: GetAdByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAdByIdQuery, GetAdByIdQueryVariables>(GetAdByIdDocument, options);
+      }
+export function useGetAdByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAdByIdQuery, GetAdByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAdByIdQuery, GetAdByIdQueryVariables>(GetAdByIdDocument, options);
+        }
+export function useGetAdByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAdByIdQuery, GetAdByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAdByIdQuery, GetAdByIdQueryVariables>(GetAdByIdDocument, options);
+        }
+export type GetAdByIdQueryHookResult = ReturnType<typeof useGetAdByIdQuery>;
+export type GetAdByIdLazyQueryHookResult = ReturnType<typeof useGetAdByIdLazyQuery>;
+export type GetAdByIdSuspenseQueryHookResult = ReturnType<typeof useGetAdByIdSuspenseQuery>;
+export type GetAdByIdQueryResult = Apollo.QueryResult<GetAdByIdQuery, GetAdByIdQueryVariables>;

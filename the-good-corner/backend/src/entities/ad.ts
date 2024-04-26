@@ -32,6 +32,7 @@ export class Ad extends BaseEntity {
   @Column()
   owner: string;
 
+  @Field()
   @Column()
   price: number;
 
