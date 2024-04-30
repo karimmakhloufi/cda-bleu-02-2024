@@ -17,6 +17,7 @@ import TagResolver from "./resolvers/TagResolver";
 // import { ILike } from "typeorm";
 
 const start = async () => {
+  console.log("hot reload is working ?");
   await dataSource.initialize();
   const schema = await buildSchema({
     resolvers: [AdResolver, CategoryResolver, TagResolver],
