@@ -8,16 +8,24 @@ import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
 import { Category } from "./entities/category";
 import { Ad } from "./entities/ad";
+import { Tag } from "./entities/tag";
 
 const start = async () => {
   console.log("hot reload is working ?");
   await dataSource.initialize();
 
-  // If no category was created, create one so the ad form works
+  // If no categories were created, create some
   const categories = await Category.find();
   if (categories.length === 0) {
     await Category.save({ name: "miscellaneous" });
     await Category.save({ name: "vehicles" });
+  }
+
+  // If no tags were created, create some
+  const tags = await Tag.find();
+  if (tags.length === 0) {
+    await Tag.save({ name: "new" });
+    await Tag.save({ name: "used" });
   }
 
   const vehicles = await Category.findOneByOrFail({ name: "vehicles" });
