@@ -10,6 +10,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 100
+    depends_on:
+      db:
+        condition: service_healthy
   frontend:
     build: ./frontend
     ports:
@@ -17,3 +20,12 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
