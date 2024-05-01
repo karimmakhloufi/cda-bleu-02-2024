@@ -32,6 +32,8 @@ services:
       interval: 1s
       timeout: 5s
       retries: 100
+  img:
+    build: ./img
   apigateway:
     image: nginx
     ports:
