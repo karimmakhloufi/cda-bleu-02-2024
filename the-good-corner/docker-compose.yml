@@ -17,3 +17,11 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
