@@ -6,6 +6,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
+import { Category } from "./entities/category";
 
 // import cors from "cors";
 // import { validate } from "class-validator";
@@ -19,6 +20,10 @@ import TagResolver from "./resolvers/TagResolver";
 const start = async () => {
   console.log("hot reload is working ?");
   await dataSource.initialize();
+  const categories = await Category.find();
+  if (categories.length === 0) {
+    Category.save({ name: "divers" });
+  }
   const schema = await buildSchema({
     resolvers: [AdResolver, CategoryResolver, TagResolver],
   });

@@ -38,5 +38,13 @@ services:
         condition: service_healthy
       frontend:
         condition: service_healthy
+      img:
+        condition: service_healthy
     ports:
       - 7000:80
+  img:
+    build: ./img
+    healthcheck:
+      test: "curl --fail --request GET --url 'http://localhost:4000' || exit 1"
+      interval: 1s
+      timeout: 2s
