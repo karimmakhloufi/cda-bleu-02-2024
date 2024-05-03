@@ -12,6 +12,8 @@ services:
         condition: service_healthy
   frontend:
     build: ./frontend
+    volumes:
+      - ./frontend/src:/app/src
     depends_on:
       backend:
         condition: service_healthy

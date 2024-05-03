@@ -1,6 +1,8 @@
 import { GET_ALL_ADS } from "../../components/RecentAds";
 import { gql, useMutation } from "@apollo/client";
 import { useGetAllCategoriesAndTagsQuery } from "../../generated/graphql-types";
+import { useState } from "react";
+import axios from "axios";
 
 const CREATE_NEW_AD = gql`
   mutation Mutation($data: NewAdInput!) {
@@ -11,6 +13,8 @@ const CREATE_NEW_AD = gql`
 `;
 
 const NewAd = () => {
+  const [file, setFile] = useState<File>();
+  const [imageURL, setImageURL] = useState<string>();
   const { loading, error, data } = useGetAllCategoriesAndTagsQuery();
   const [createNewAd] = useMutation(CREATE_NEW_AD, {
     onCompleted(data) {
@@ -38,9 +42,7 @@ const NewAd = () => {
           const formJson: any = Object.fromEntries(formData.entries());
           formJson.price = parseInt(formJson.price);
           formJson.tags = tagsArray;
-          if (formJson.imgUrl.length === 0) {
-            delete formJson.imgUrl;
-          }
+          formJson.imgUrl = imageURL;
           console.log("formjson", formJson);
           const result = await createNewAd({
             variables: {
@@ -50,6 +52,50 @@ const NewAd = () => {
           console.log("result", result);
         }}
       >
+        <div>
+          <input
+            type="file"
+            onChange={(e) => {
+              if (e.target.files) {
+                setFile(e.target.files[0]);
+              }
+            }}
+          />
+          <button
+            onClick={async (event) => {
+              event.preventDefault();
+              if (file) {
+                const url = "/img";
+                const formData = new FormData();
+                formData.append("file", file, file.name);
+                try {
+                  const response = await axios.post(url, formData);
+                  setImageURL(response.data.filename);
+                } catch (err) {
+                  console.log("error", err);
+                }
+              } else {
+                alert("select a file to upload");
+              }
+            }}
+          >
+            Upload Image
+          </button>
+          {imageURL ? (
+            <>
+              <br />
+              <img width={"500"} alt="uploadedImg" src={imageURL} />
+              <br />
+            </>
+          ) : null}
+          <button
+            onClick={() => {
+              console.log("post this to backend: " + imageURL);
+            }}
+          >
+            Add new image
+          </button>
+        </div>
         <label>
           Titre de l&apos;annonce: <br />
           <input className="text-field" name="title" />
@@ -68,11 +114,6 @@ const NewAd = () => {
         <label>
           Prix: <br />
           <input className="text-field" name="price" />
-        </label>
-        <br />
-        <label>
-          Image: <br />
-          <input className="text-field" name="imgUrl" />
         </label>
         <br />
         <label>
