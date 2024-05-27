@@ -39,11 +39,18 @@ export type Category = {
 export type Mutation = {
   __typename?: 'Mutation';
   createNewAd: Ad;
+  createUser: Scalars['String']['output'];
 };
 
 
 export type MutationCreateNewAdArgs = {
   data: NewAdInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type NewAdInput = {

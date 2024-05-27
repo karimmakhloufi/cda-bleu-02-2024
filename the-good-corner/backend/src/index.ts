@@ -7,6 +7,7 @@ import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
 import { Category } from "./entities/category";
+import UserResolver from "./resolvers/UserResolver";
 
 // import cors from "cors";
 // import { validate } from "class-validator";
@@ -25,7 +26,7 @@ const start = async () => {
     Category.save({ name: "divers" });
   }
   const schema = await buildSchema({
-    resolvers: [AdResolver, CategoryResolver, TagResolver],
+    resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
   });
 
   const server = new ApolloServer({ schema });
