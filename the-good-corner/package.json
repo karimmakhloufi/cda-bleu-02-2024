@@ -1,0 +1,11 @@
+{
+  "name": "the-good-corner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker compose up --build"
+  },
+  "author": "",
+  "license": "ISC"
+}
