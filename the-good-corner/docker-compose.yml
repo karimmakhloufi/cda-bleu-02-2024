@@ -7,6 +7,7 @@ services:
       test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4000'' --data ''{"query":"query { __typename }"}'' || exit 1'
       interval: 1s
       timeout: 2s
+      retries: 100
     depends_on:
       db:
         condition: service_healthy
@@ -21,12 +22,14 @@ services:
       test: "curl --fail --request GET --url 'http://localhost:3000' || exit 1"
       interval: 1s
       timeout: 2s
+      retries: 100
   db:
     image: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
       interval: 1s
       timeout: 2s
+      retries: 100
     environment:
       POSTGRES_PASSWORD: example
   adminer:
@@ -50,3 +53,4 @@ services:
       test: "curl --fail --request GET --url 'http://localhost:4000' || exit 1"
       interval: 1s
       timeout: 2s
+      retries: 100
