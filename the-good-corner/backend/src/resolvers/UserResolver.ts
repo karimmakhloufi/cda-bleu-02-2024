@@ -10,6 +10,9 @@ class UserResolver {
     @Arg("password") passwordFromClient: string
   ) {
     try {
+      if (process.env.JWT_SECRET_KEY === undefined) {
+        throw new Error("NO JWT SECRET KEY DEFINED");
+      }
       const userFromDB = await User.findOneByOrFail({ email: emailFromClient });
       console.log("UserFromDB", userFromDB);
       const isPasswordCorrect = await argon2.verify(
@@ -20,7 +23,7 @@ class UserResolver {
       if (isPasswordCorrect) {
         const token = jwt.sign(
           { email: userFromDB.email },
-          "secret_key_change_me_please"
+          process.env.JWT_SECRET_KEY
         );
         return token;
       } else {

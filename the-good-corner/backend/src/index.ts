@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv/config";
 import { buildSchema } from "type-graphql";
 import AdResolver from "./resolvers/AdResolver";
 import { ApolloServer } from "@apollo/server";
@@ -20,7 +21,6 @@ import UserResolver from "./resolvers/UserResolver";
 // import { ILike } from "typeorm";
 
 const start = async () => {
-  console.log("hot reload is working ?");
   await dataSource.initialize();
   const categories = await Category.find();
   if (categories.length === 0) {
@@ -35,10 +35,17 @@ const start = async () => {
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
     context: async ({ req }) => {
+      console.log("secret key ", process.env.JWT_SECRET_KEY);
+      if (process.env.JWT_SECRET_KEY === undefined) {
+        throw new Error("NO JWT SECRET KEY CONFIGURED");
+      }
+      console.log("req header ", req.headers);
       const token = req.headers.authorization?.split(" ")[1];
+      console.log("token in context function ", token);
       if (token) {
         console.log("il y a un token");
-        const payload = jwt.verify(token, "secret_key_change_me_please");
+        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        console.log("payload from verified token ", payload);
         if (payload) {
           console.log("context function valid token");
           return payload;
