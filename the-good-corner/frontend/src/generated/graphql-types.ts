@@ -70,11 +70,18 @@ export type Query = {
   getAllAds: Array<Ad>;
   getAllCategories: Array<Category>;
   getAllTags: Array<Tag>;
+  login: Scalars['String']['output'];
 };
 
 
 export type QueryGetAdByIdArgs = {
   adId: Scalars['String']['input'];
+};
+
+
+export type QueryLoginArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Tag = {
