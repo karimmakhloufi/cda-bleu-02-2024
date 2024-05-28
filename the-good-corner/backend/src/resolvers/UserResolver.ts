@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query } from "type-graphql";
+import { Arg, Ctx, Mutation, Query } from "type-graphql";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { User } from "../entities/user";
@@ -7,7 +7,8 @@ class UserResolver {
   @Query(() => String)
   async login(
     @Arg("email") emailFromClient: string,
-    @Arg("password") passwordFromClient: string
+    @Arg("password") passwordFromClient: string,
+    @Ctx() context: any
   ) {
     try {
       if (process.env.JWT_SECRET_KEY === undefined) {
@@ -25,6 +26,7 @@ class UserResolver {
           { email: userFromDB.email },
           process.env.JWT_SECRET_KEY
         );
+        context.res.setHeader("Set-Cookie", `token=${token}`);
         return token;
       } else {
         throw new Error("Bad Login");

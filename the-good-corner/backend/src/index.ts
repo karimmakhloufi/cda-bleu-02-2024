@@ -34,7 +34,7 @@ const start = async () => {
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
-    context: async ({ req }) => {
+    context: async ({ req, res }) => {
       console.log("secret key ", process.env.JWT_SECRET_KEY);
       if (process.env.JWT_SECRET_KEY === undefined) {
         throw new Error("NO JWT SECRET KEY CONFIGURED");
@@ -48,10 +48,10 @@ const start = async () => {
         console.log("payload from verified token ", payload);
         if (payload) {
           console.log("context function valid token");
-          return payload;
+          return { payload: payload, res: res };
         }
       }
-      return {};
+      return { res: res };
     },
   });
 
