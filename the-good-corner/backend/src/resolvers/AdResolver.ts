@@ -2,6 +2,7 @@ import { Category } from "../entities/category";
 import { Ad } from "../entities/ad";
 import {
   Arg,
+  Ctx,
   Field,
   ID,
   InputType,
@@ -41,7 +42,8 @@ class NewAdInput implements Partial<Ad> {
 @Resolver(Ad)
 class AdResolver {
   @Query(() => [Ad])
-  async getAllAds() {
+  async getAllAds(@Ctx() context: any) {
+    console.log("context from getAllAds ", context);
     const ads = await Ad.find({ relations: { category: true } });
     return ads;
   }

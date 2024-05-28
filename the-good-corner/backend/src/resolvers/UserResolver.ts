@@ -1,5 +1,6 @@
 import { Arg, Mutation, Query } from "type-graphql";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 import { User } from "../entities/user";
 
 class UserResolver {
@@ -17,7 +18,11 @@ class UserResolver {
       );
       console.log("is password correct", isPasswordCorrect);
       if (isPasswordCorrect) {
-        return "login ok";
+        const token = jwt.sign(
+          { email: userFromDB.email },
+          "secret_key_change_me_please"
+        );
+        return token;
       } else {
         throw new Error("Bad Login");
       }
