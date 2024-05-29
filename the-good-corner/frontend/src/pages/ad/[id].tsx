@@ -1,12 +1,13 @@
-import { AdCardProps } from "@/components/AdCard";
-import { useGetAdByIdQuery } from "@/generated/graphql-types";
-import axios from "axios";
+import {
+  useFlagAdByIdMutation,
+  useGetAdByIdQuery,
+} from "@/generated/graphql-types";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 const AdDetails = () => {
   const router = useRouter();
+  const [flagAdById] = useFlagAdByIdMutation();
   const { data, loading, error } = useGetAdByIdQuery({
     variables: { adId: router.query.id as string },
   });
@@ -60,6 +61,16 @@ const AdDetails = () => {
             >
               Modifier
             </Link>
+            <button
+              onClick={() => {
+                console.log("signer l'annonce avec l'id", router.query.id);
+                flagAdById({
+                  variables: { flagAdByIdId: router.query.id as string },
+                });
+              }}
+            >
+              Signaler cette annonce
+            </button>
           </div>
         </section>
       </>

@@ -34,3 +34,19 @@ export const GET_JWT = gql`
     login(password: $password, email: $email)
   }
 `;
+
+export const GET_ALL_FLAGGED_ADS = gql`
+  query GetAllFlaggedAds {
+    getAllFlaggedAds {
+      id
+      title
+      description
+      price
+      ville
+      imgUrl
+      owner {
+        email
+      }
+    }
+  }
+`;

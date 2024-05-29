@@ -44,6 +44,9 @@ export class Ad extends BaseEntity {
   })
   imgUrl: string;
 
+  @Column({ default: false })
+  flagged: boolean;
+
   @Field(() => Category)
   @ManyToOne(() => Category, (category) => category.ads)
   category: Category;

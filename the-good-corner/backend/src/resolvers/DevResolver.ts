@@ -23,6 +23,12 @@ class DevResolver {
       role: "USER",
     });
 
+    await User.save({
+      email: "admin@gmail.com",
+      hashedPassword: await argon2.hash("test"),
+      role: "ADMIN",
+    });
+
     await Ad.save({
       category: vehicle,
       owner: alice,
@@ -42,6 +48,17 @@ class DevResolver {
       imgUrl:
         "https://images.caradisiac.com/images/2/0/6/7/172067/S0-la-peugeot-206-en-occasion-les-meilleures-et-les-pires-versions-572179.jpg",
       ville: "Paris",
+    });
+
+    await Ad.save({
+      category: vehicle,
+      owner: alice,
+      description: "I sell my boat",
+      title: "Boat to sell",
+      price: 30000,
+      imgUrl: "https://cdn.britannica.com/25/123125-050-8E6C8227/rowboat.jpg",
+      ville: "Paris",
+      flagged: true,
     });
     return "DB was reset";
   }

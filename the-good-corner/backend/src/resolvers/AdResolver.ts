@@ -46,6 +46,16 @@ class AdResolver {
     return ads;
   }
 
+  @Authorized("ADMIN")
+  @Query(() => [Ad])
+  async getAllFlaggedAds() {
+    const ads = await Ad.find({
+      where: { flagged: true },
+      relations: { category: true },
+    });
+    return ads;
+  }
+
   @Query(() => Ad)
   async getAdById(@Arg("adId") adId: string) {
     const ad = await Ad.findOneByOrFail({ id: Number.parseInt(adId) });
@@ -72,6 +82,12 @@ class AdResolver {
   async deleteAdById(@Arg("id") idToDelete: string) {
     await Ad.delete(idToDelete);
     return "Ad was deleted";
+  }
+
+  @Mutation(() => String)
+  async flagAdById(@Arg("id") idToFlag: string) {
+    await Ad.save({ id: Number.parseInt(idToFlag), flagged: true });
+    return "Ad has been flagged";
   }
 }
 

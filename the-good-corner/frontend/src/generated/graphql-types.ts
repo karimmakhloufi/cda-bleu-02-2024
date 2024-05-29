@@ -41,6 +41,7 @@ export type Mutation = {
   createNewAd: Ad;
   createUser: Scalars['String']['output'];
   deleteAdById: Scalars['String']['output'];
+  flagAdById: Scalars['String']['output'];
 };
 
 
@@ -59,6 +60,11 @@ export type MutationDeleteAdByIdArgs = {
   id: Scalars['String']['input'];
 };
 
+
+export type MutationFlagAdByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
 export type NewAdInput = {
   category: Scalars['ID']['input'];
   description: Scalars['String']['input'];
@@ -74,8 +80,10 @@ export type Query = {
   getAdById: Ad;
   getAllAds: Array<Ad>;
   getAllCategories: Array<Category>;
+  getAllFlaggedAds: Array<Ad>;
   getAllTags: Array<Tag>;
   login: Scalars['String']['output'];
+  resetDB: Scalars['String']['output'];
 };
 
 
@@ -109,6 +117,13 @@ export type CreateNewUserMutationVariables = Exact<{
 
 export type CreateNewUserMutation = { __typename?: 'Mutation', createUser: string };
 
+export type FlagAdByIdMutationVariables = Exact<{
+  flagAdByIdId: Scalars['String']['input'];
+}>;
+
+
+export type FlagAdByIdMutation = { __typename?: 'Mutation', flagAdById: string };
+
 export type GetAllCategoriesAndTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -128,6 +143,11 @@ export type LoginQueryVariables = Exact<{
 
 
 export type LoginQuery = { __typename?: 'Query', login: string };
+
+export type GetAllFlaggedAdsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllFlaggedAdsQuery = { __typename?: 'Query', getAllFlaggedAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, price: number, ville: string, imgUrl: string, owner: { __typename?: 'User', email: string } }> };
 
 
 export const CreateNewUserDocument = gql`
@@ -162,6 +182,37 @@ export function useCreateNewUserMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateNewUserMutationHookResult = ReturnType<typeof useCreateNewUserMutation>;
 export type CreateNewUserMutationResult = Apollo.MutationResult<CreateNewUserMutation>;
 export type CreateNewUserMutationOptions = Apollo.BaseMutationOptions<CreateNewUserMutation, CreateNewUserMutationVariables>;
+export const FlagAdByIdDocument = gql`
+    mutation FlagAdById($flagAdByIdId: String!) {
+  flagAdById(id: $flagAdByIdId)
+}
+    `;
+export type FlagAdByIdMutationFn = Apollo.MutationFunction<FlagAdByIdMutation, FlagAdByIdMutationVariables>;
+
+/**
+ * __useFlagAdByIdMutation__
+ *
+ * To run a mutation, you first call `useFlagAdByIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFlagAdByIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [flagAdByIdMutation, { data, loading, error }] = useFlagAdByIdMutation({
+ *   variables: {
+ *      flagAdByIdId: // value for 'flagAdByIdId'
+ *   },
+ * });
+ */
+export function useFlagAdByIdMutation(baseOptions?: Apollo.MutationHookOptions<FlagAdByIdMutation, FlagAdByIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FlagAdByIdMutation, FlagAdByIdMutationVariables>(FlagAdByIdDocument, options);
+      }
+export type FlagAdByIdMutationHookResult = ReturnType<typeof useFlagAdByIdMutation>;
+export type FlagAdByIdMutationResult = Apollo.MutationResult<FlagAdByIdMutation>;
+export type FlagAdByIdMutationOptions = Apollo.BaseMutationOptions<FlagAdByIdMutation, FlagAdByIdMutationVariables>;
 export const GetAllCategoriesAndTagsDocument = gql`
     query GetAllCategoriesAndTags {
   getAllCategories {
@@ -293,3 +344,50 @@ export type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
 export type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
 export type LoginSuspenseQueryHookResult = ReturnType<typeof useLoginSuspenseQuery>;
 export type LoginQueryResult = Apollo.QueryResult<LoginQuery, LoginQueryVariables>;
+export const GetAllFlaggedAdsDocument = gql`
+    query GetAllFlaggedAds {
+  getAllFlaggedAds {
+    id
+    title
+    description
+    price
+    ville
+    imgUrl
+    owner {
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllFlaggedAdsQuery__
+ *
+ * To run a query within a React component, call `useGetAllFlaggedAdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllFlaggedAdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllFlaggedAdsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllFlaggedAdsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>(GetAllFlaggedAdsDocument, options);
+      }
+export function useGetAllFlaggedAdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>(GetAllFlaggedAdsDocument, options);
+        }
+export function useGetAllFlaggedAdsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>(GetAllFlaggedAdsDocument, options);
+        }
+export type GetAllFlaggedAdsQueryHookResult = ReturnType<typeof useGetAllFlaggedAdsQuery>;
+export type GetAllFlaggedAdsLazyQueryHookResult = ReturnType<typeof useGetAllFlaggedAdsLazyQuery>;
+export type GetAllFlaggedAdsSuspenseQueryHookResult = ReturnType<typeof useGetAllFlaggedAdsSuspenseQuery>;
+export type GetAllFlaggedAdsQueryResult = Apollo.QueryResult<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>;

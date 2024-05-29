@@ -5,3 +5,9 @@ export const CREATE_NEW_USER = gql`
     createUser(password: $password, email: $email)
   }
 `;
+
+export const FLAG_AD_BY_ID = gql`
+  mutation FlagAdById($flagAdByIdId: String!) {
+    flagAdById(id: $flagAdByIdId)
+  }
+`;
