@@ -30,7 +30,7 @@ class UserResolver {
         throw new Error("Bad Login");
       }
     } catch (err) {
-      return "bad login";
+      throw new Error("Bad Login");
     }
   }
 
