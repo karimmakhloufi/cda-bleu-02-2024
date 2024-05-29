@@ -9,19 +9,28 @@ import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
-import resetDB from "./config/reset";
 
 const start = async () => {
   await dataSource.initialize();
-  const reset = false;
-  if (reset) {
-    resetDB();
-  }
+
   const schema = await buildSchema({
     resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
-    authChecker: ({ context }) => {
-      console.log("context in auth checker", context);
-      if (context.email !== undefined) {
+    authChecker: ({ context }, roles) => {
+      console.log("roles for this query/mutation ", roles);
+      // Check user
+      if (!context.email) {
+        // No user, restrict access
+        return false;
+      }
+
+      // Check '@Authorized()'
+      if (roles.length === 0) {
+        // Only authentication required
+        return true;
+      }
+
+      // Check '@Authorized(...)' roles inclues the role of user
+      if (roles.includes(context.role)) {
         return true;
       } else {
         return false;

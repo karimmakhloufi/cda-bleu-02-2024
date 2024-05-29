@@ -7,9 +7,9 @@ import { Ad } from "../entities/ad";
 
 const resetDB = async () => {
   console.log("db will be reset");
+  await dataSource.initialize();
   await dataSource.dropDatabase();
   await dataSource.destroy();
-  await dataSource.initialize();
   await Category.save({ name: "misc" });
   const vehicle = await Category.save({ name: "vehicle" });
   await Tag.save({ name: "new" });
@@ -17,6 +17,7 @@ const resetDB = async () => {
   const alice = await User.save({
     email: "alice@gmail.com",
     hashedPassword: await argon2.hash("test"),
+    role: "USER",
   });
 
   await Ad.save({

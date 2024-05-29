@@ -66,6 +66,13 @@ class AdResolver {
     });
     return resultForApi[0];
   }
+
+  @Authorized(["ADMIN", "SUPERADMIN"])
+  @Mutation(() => String)
+  async deleteAdById(@Arg("id") idToDelete: string) {
+    await Ad.delete(idToDelete);
+    return "Ad was deleted";
+  }
 }
 
 export default AdResolver;
