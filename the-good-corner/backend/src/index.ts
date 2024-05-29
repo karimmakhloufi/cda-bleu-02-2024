@@ -8,14 +8,14 @@ import jwt from "jsonwebtoken";
 import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
-import { Category } from "./entities/category";
 import UserResolver from "./resolvers/UserResolver";
+import resetDB from "./config/reset";
 
 const start = async () => {
   await dataSource.initialize();
-  const categories = await Category.find();
-  if (categories.length === 0) {
-    Category.save({ name: "divers" });
+  const reset = false;
+  if (reset) {
+    resetDB();
   }
   const schema = await buildSchema({
     resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
