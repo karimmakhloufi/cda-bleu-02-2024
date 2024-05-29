@@ -9,12 +9,18 @@ import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
+import DevResolver from "./resolvers/DevResolver";
 
 const start = async () => {
   await dataSource.initialize();
-
   const schema = await buildSchema({
-    resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
+    resolvers: [
+      DevResolver,
+      AdResolver,
+      CategoryResolver,
+      TagResolver,
+      UserResolver,
+    ],
     authChecker: ({ context }, roles) => {
       console.log("roles for this query/mutation ", roles);
       // Check user

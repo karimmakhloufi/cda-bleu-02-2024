@@ -40,6 +40,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNewAd: Ad;
   createUser: Scalars['String']['output'];
+  deleteAdById: Scalars['String']['output'];
 };
 
 
@@ -51,6 +52,11 @@ export type MutationCreateNewAdArgs = {
 export type MutationCreateUserArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteAdByIdArgs = {
+  id: Scalars['String']['input'];
 };
 
 export type NewAdInput = {
