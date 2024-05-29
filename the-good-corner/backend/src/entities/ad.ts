@@ -11,6 +11,7 @@ import { Category } from "./category";
 import { Tag } from "./tag";
 import { Length } from "class-validator";
 import { Field, ObjectType } from "type-graphql";
+import { User } from "./user";
 
 @ObjectType()
 @Entity()
@@ -30,10 +31,6 @@ export class Ad extends BaseEntity {
 
   @Field()
   @Column()
-  owner: string;
-
-  @Field()
-  @Column()
   price: number;
 
   @Field()
@@ -50,6 +47,10 @@ export class Ad extends BaseEntity {
   @Field(() => Category)
   @ManyToOne(() => Category, (category) => category.ads)
   category: Category;
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.ads, { eager: true })
+  owner: User;
 
   @ManyToMany(() => Tag)
   @JoinTable()

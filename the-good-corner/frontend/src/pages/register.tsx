@@ -25,12 +25,21 @@ const Register = () => {
     >
       <label>
         email:
-        <input className="text-field" name="email" />
+        <input
+          className="text-field"
+          name="email"
+          defaultValue={"alice@gmail.com"}
+        />
       </label>
       <br />
       <label>
         password:
-        <input type="password" className="text-field" name="password" />
+        <input
+          type="password"
+          className="text-field"
+          name="password"
+          defaultValue={"test"}
+        />
       </label>
       <br />
       <button className="button">Register</button>

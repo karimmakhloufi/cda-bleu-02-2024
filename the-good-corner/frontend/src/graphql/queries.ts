@@ -19,7 +19,9 @@ export const GET_AD_BY_ID = gql`
       id
       title
       description
-      owner
+      owner {
+        email
+      }
       ville
       imgUrl
       price

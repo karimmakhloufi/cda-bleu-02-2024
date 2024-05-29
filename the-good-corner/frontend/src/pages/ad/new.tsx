@@ -113,11 +113,6 @@ const NewAd = () => {
         </label>
         <br />
         <label>
-          Vendeur: <br />
-          <input className="text-field" name="owner" />
-        </label>
-        <br />
-        <label>
           Prix: <br />
           <input className="text-field" name="price" />
         </label>

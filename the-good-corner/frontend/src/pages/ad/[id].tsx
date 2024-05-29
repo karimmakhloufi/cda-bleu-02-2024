@@ -33,7 +33,7 @@ const AdDetails = () => {
             </div>
             <hr className="separator" />
             <div className="ad-details-owner">
-              Annoncée publiée par <b>{data?.getAdById.owner}</b>
+              Annoncée publiée par <b>{data?.getAdById.owner.email}</b>
             </div>
             <a
               href="mailto:serge@serge.com"

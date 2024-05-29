@@ -23,7 +23,7 @@ export type Ad = {
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
   imgUrl: Scalars['String']['output'];
-  owner: Scalars['String']['output'];
+  owner: User;
   price: Scalars['Float']['output'];
   title: Scalars['String']['output'];
   ville: Scalars['String']['output'];
@@ -57,7 +57,6 @@ export type NewAdInput = {
   category: Scalars['ID']['input'];
   description: Scalars['String']['input'];
   imgUrl?: InputMaybe<Scalars['String']['input']>;
-  owner: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   tags: Array<Scalars['ID']['input']>;
   title: Scalars['String']['input'];
@@ -90,6 +89,12 @@ export type Tag = {
   name: Scalars['String']['output'];
 };
 
+export type User = {
+  __typename?: 'User';
+  ads: Array<Ad>;
+  email: Scalars['String']['output'];
+};
+
 export type CreateNewUserMutationVariables = Exact<{
   password: Scalars['String']['input'];
   email: Scalars['String']['input'];
@@ -108,7 +113,7 @@ export type GetAdByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, ville: string, imgUrl: string, price: number } };
+export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, ville: string, imgUrl: string, price: number, owner: { __typename?: 'User', email: string } } };
 
 export type LoginQueryVariables = Exact<{
   password: Scalars['String']['input'];
@@ -201,7 +206,9 @@ export const GetAdByIdDocument = gql`
     id
     title
     description
-    owner
+    owner {
+      email
+    }
     ville
     imgUrl
     price

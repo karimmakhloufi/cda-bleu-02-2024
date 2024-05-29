@@ -28,7 +28,7 @@ const Login = () => {
         <input
           className="text-field"
           name="email"
-          defaultValue={"david@gmail.com"}
+          defaultValue={"alice@gmail.com"}
         />
       </label>
       <br />
