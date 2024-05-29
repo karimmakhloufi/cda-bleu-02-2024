@@ -28,6 +28,14 @@ const start = async () => {
   }
   const schema = await buildSchema({
     resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
+    authChecker: ({ context }) => {
+      console.log("context in auth checker", context);
+      if (context.email !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   });
 
   const server = new ApolloServer({ schema });
@@ -35,19 +43,19 @@ const start = async () => {
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
     context: async ({ req }) => {
-      console.log("secret key ", process.env.JWT_SECRET_KEY);
+      // console.log("secret key ", process.env.JWT_SECRET_KEY);
       if (process.env.JWT_SECRET_KEY === undefined) {
         throw new Error("NO JWT SECRET KEY CONFIGURED");
       }
-      console.log("req header ", req.headers);
+      // console.log("req header ", req.headers);
       const token = req.headers.authorization?.split(" ")[1];
-      console.log("token in context function ", token);
+      // console.log("token in context function ", token);
       if (token) {
-        console.log("il y a un token");
+        // console.log("il y a un token");
         const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        console.log("payload from verified token ", payload);
+        // console.log("payload from verified token ", payload);
         if (payload) {
-          console.log("context function valid token");
+          // console.log("context function valid token");
           return payload;
         }
       }

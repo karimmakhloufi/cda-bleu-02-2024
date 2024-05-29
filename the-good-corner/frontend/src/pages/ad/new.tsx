@@ -2,6 +2,7 @@ import { GET_ALL_ADS } from "../../components/RecentAds";
 import { gql, useMutation } from "@apollo/client";
 import { useGetAllCategoriesAndTagsQuery } from "../../generated/graphql-types";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 
 const CREATE_NEW_AD = gql`
@@ -13,6 +14,11 @@ const CREATE_NEW_AD = gql`
 `;
 
 const NewAd = () => {
+  const router = useRouter();
+  console.log("localstorage token ", localStorage.getItem("token"));
+  if (localStorage.getItem("token") === null) {
+    router.push("/login");
+  }
   const [file, setFile] = useState<File>();
   const [imageURL, setImageURL] = useState<string>();
   const { loading, error, data } = useGetAllCategoriesAndTagsQuery();

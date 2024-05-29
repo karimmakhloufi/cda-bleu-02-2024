@@ -2,6 +2,7 @@ import { Category } from "../entities/category";
 import { Ad } from "../entities/ad";
 import {
   Arg,
+  Authorized,
   Ctx,
   Field,
   ID,
@@ -54,6 +55,7 @@ class AdResolver {
     return ad;
   }
 
+  @Authorized()
   @Mutation(() => Ad)
   async createNewAd(@Arg("data") newAdData: NewAdInput) {
     console.log("new ad data", newAdData);
