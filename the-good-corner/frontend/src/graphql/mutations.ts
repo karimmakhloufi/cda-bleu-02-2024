@@ -11,3 +11,15 @@ export const FLAG_AD_BY_ID = gql`
     flagAdById(id: $flagAdByIdId)
   }
 `;
+
+export const UNFLAG_AD_BY_ID = gql`
+  mutation UnflagAdById($unflagAdByIdId: String!) {
+    unflagAdById(id: $unflagAdByIdId)
+  }
+`;
+
+export const DELETE_AD_BY_ID = gql`
+  mutation DeleteAdById($deleteAdByIdId: String!) {
+    deleteAdById(id: $deleteAdByIdId)
+  }
+`;

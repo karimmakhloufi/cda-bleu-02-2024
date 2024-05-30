@@ -89,6 +89,12 @@ class AdResolver {
     await Ad.save({ id: Number.parseInt(idToFlag), flagged: true });
     return "Ad has been flagged";
   }
+
+  @Mutation(() => String)
+  async unflagAdById(@Arg("id") idToUnFlag: string) {
+    await Ad.save({ id: Number.parseInt(idToUnFlag), flagged: false });
+    return "Ad has been unflagged";
+  }
 }
 
 export default AdResolver;
