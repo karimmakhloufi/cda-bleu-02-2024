@@ -1,10 +1,11 @@
 import "reflect-metadata";
 import "dotenv/config";
 import { buildSchema } from "type-graphql";
-import AdResolver from "./resolvers/AdResolver";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import jwt from "jsonwebtoken";
+import setCookieParser from "set-cookie-parser";
+import AdResolver from "./resolvers/AdResolver";
 import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
@@ -54,18 +55,25 @@ const start = async () => {
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
-    context: async ({ req }) => {
+    context: async ({ req, res }) => {
       if (process.env.JWT_SECRET_KEY === undefined) {
         throw new Error("NO JWT SECRET KEY CONFIGURED");
       }
-      const token = req.headers.authorization?.split(" ")[1];
-      if (token) {
-        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+      const cookies = setCookieParser.parse(req.headers.cookie as string, {
+        map: true,
+      });
+
+      if (cookies.token && cookies.token.value) {
+        const payload = jwt.verify(
+          cookies.token.value,
+          process.env.JWT_SECRET_KEY
+        ) as {};
         if (payload) {
-          return payload;
+          return { ...payload, res: res };
         }
       }
-      return {};
+      return { res: res };
     },
   });
 

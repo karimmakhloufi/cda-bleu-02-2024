@@ -18,7 +18,8 @@ class UserResolver {
   @Query(() => String)
   async login(
     @Arg("email") emailFromClient: string,
-    @Arg("password") passwordFromClient: string
+    @Arg("password") passwordFromClient: string,
+    @Ctx() context: any
   ) {
     try {
       if (process.env.JWT_SECRET_KEY === undefined) {
@@ -36,7 +37,11 @@ class UserResolver {
           { id: userFromDB.id, email: userFromDB.email, role: userFromDB.role },
           process.env.JWT_SECRET_KEY
         );
-        return token;
+        context.res.setHeader(
+          "Set-Cookie",
+          `token=${token};secure;HttpOnly;SameSite=Strict`
+        );
+        return "login ok";
       } else {
         throw new Error("Bad Login");
       }
