@@ -12,7 +12,6 @@ import {
   Resolver,
 } from "type-graphql";
 import { Tag } from "../entities/tag";
-import { User } from "../entities/user";
 
 @InputType()
 class NewAdInput implements Partial<Ad> {
@@ -65,10 +64,9 @@ class AdResolver {
   @Authorized()
   @Mutation(() => Ad)
   async createNewAd(@Ctx() context: any, @Arg("data") newAdData: NewAdInput) {
-    const userFromDB = await User.findOneByOrFail({ email: context.email });
     const resultFromSave = await Ad.save({
       ...newAdData,
-      owner: { id: userFromDB.id },
+      owner: { id: context.id },
     });
     const resultForApi = await Ad.find({
       relations: { category: true },

@@ -22,7 +22,7 @@ class UserResolver {
       console.log("is password correct", isPasswordCorrect);
       if (isPasswordCorrect) {
         const token = jwt.sign(
-          { email: userFromDB.email, role: userFromDB.role },
+          { id: userFromDB.id, email: userFromDB.email, role: userFromDB.role },
           process.env.JWT_SECRET_KEY
         );
         return token;
