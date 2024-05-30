@@ -1,9 +1,17 @@
 import { ReactNode } from "react";
 import Header from "./Header";
 import { useWhoAmIQuery } from "@/generated/graphql-types";
+import { createContext } from "react";
+
+export const UserContext = createContext({
+  isLoggedIn: false,
+  email: "",
+  role: "",
+  refetch: () => {},
+});
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { data, error, loading } = useWhoAmIQuery();
+  const { data, error, loading, refetch } = useWhoAmIQuery();
   if (loading) {
     return <p>Loading</p>;
   }
@@ -13,14 +21,19 @@ const Layout = ({ children }: { children: ReactNode }) => {
   }
   if (data) {
     return (
-      <>
-        <Header
-          email={data.whoAmI.email}
-          isLoggedIn={data.whoAmI.isLoggedIn}
-          role={data.whoAmI.role}
-        />
-        <main className="main-content">{children}</main>
-      </>
+      <UserContext.Provider
+        value={{
+          isLoggedIn: data.whoAmI.isLoggedIn,
+          email: data.whoAmI.email ?? "",
+          role: data.whoAmI.role ?? "",
+          refetch: refetch,
+        }}
+      >
+        <>
+          <Header />
+          <main className="main-content">{children}</main>
+        </>
+      </UserContext.Provider>
     );
   }
 };

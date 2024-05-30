@@ -2,14 +2,11 @@ import Link from "next/link";
 import styles from "../styles/header.module.css";
 import NavBar from "./NavBar";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { UserContext } from "./Layout";
 
-type HeaderProps = {
-  isLoggedIn: boolean;
-  email: string | null | undefined;
-  role: string | null | undefined;
-};
-
-const Header = ({ isLoggedIn, email, role }: HeaderProps) => {
+const Header = () => {
+  const userInfo = useContext(UserContext);
   const router = useRouter();
   return (
     <header className={styles.header}>
@@ -52,11 +49,18 @@ const Header = ({ isLoggedIn, email, role }: HeaderProps) => {
             </svg>
           </button>
         </form>
-        <Link href="/ad/new" className="button link-button">
-          <span className="mobile-short-label">Publier</span>
-          <span className="desktop-long-label">Publier une annonce</span>
-        </Link>
-        {email ? <span>{email}</span> : null}
+        {userInfo.isLoggedIn ? (
+          <Link href="/ad/new" className="button link-button">
+            <span className="mobile-short-label">Publier</span>
+            <span className="desktop-long-label">Publier une annonce</span>
+          </Link>
+        ) : (
+          <Link href="/login" className="button link-button">
+            <span className="mobile-short-label">Login</span>
+            <span className="desktop-long-label">Login</span>
+          </Link>
+        )}
+        {userInfo.email ? <span>{userInfo.email}</span> : null}
       </div>
       <NavBar />
     </header>

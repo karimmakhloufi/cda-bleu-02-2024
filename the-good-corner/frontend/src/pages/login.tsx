@@ -1,7 +1,12 @@
-import { useLoginLazyQuery } from "@/generated/graphql-types";
+import { UserContext } from "../components/Layout";
+import { useLoginLazyQuery } from "../generated/graphql-types";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 
 const Login = () => {
+  const userInfo = useContext(UserContext);
   const [login] = useLoginLazyQuery();
+  const router = useRouter();
   return (
     <form
       onSubmit={async (e) => {
@@ -16,6 +21,8 @@ const Login = () => {
           variables: formJson,
           onCompleted: (data) => {
             localStorage.setItem("token", data.login);
+            userInfo.refetch();
+            router.push("/");
           },
           onError: (err) => {
             console.log("error", err);
