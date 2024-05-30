@@ -3,7 +3,13 @@ import styles from "../styles/header.module.css";
 import NavBar from "./NavBar";
 import { useRouter } from "next/router";
 
-const Header = () => {
+type HeaderProps = {
+  isLoggedIn: boolean;
+  email: string | null | undefined;
+  role: string | null | undefined;
+};
+
+const Header = ({ isLoggedIn, email, role }: HeaderProps) => {
   const router = useRouter();
   return (
     <header className={styles.header}>
@@ -50,6 +56,7 @@ const Header = () => {
           <span className="mobile-short-label">Publier</span>
           <span className="desktop-long-label">Publier une annonce</span>
         </Link>
+        {email ? <span>{email}</span> : null}
       </div>
       <NavBar />
     </header>

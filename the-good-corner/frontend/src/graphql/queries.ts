@@ -50,3 +50,13 @@ export const GET_ALL_FLAGGED_ADS = gql`
     }
   }
 `;
+
+export const WHO_AM_I = gql`
+  query WhoAmI {
+    whoAmI {
+      email
+      isLoggedIn
+      role
+    }
+  }
+`;

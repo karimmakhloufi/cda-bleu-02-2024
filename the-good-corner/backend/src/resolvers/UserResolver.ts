@@ -1,7 +1,18 @@
-import { Arg, Mutation, Query } from "type-graphql";
+import { Arg, Ctx, Field, Mutation, ObjectType, Query } from "type-graphql";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { User } from "../entities/user";
+import { Context } from "src";
+
+@ObjectType()
+class UserInfo {
+  @Field()
+  isLoggedIn: boolean;
+  @Field({ nullable: true })
+  email: string;
+  @Field({ nullable: true })
+  role: string;
+}
 
 class UserResolver {
   @Query(() => String)
@@ -43,6 +54,16 @@ class UserResolver {
     await User.save({ email: email, hashedPassword: hashedPassword });
 
     return "User was created";
+  }
+
+  @Query(() => UserInfo)
+  async whoAmI(@Ctx() context: Context) {
+    if (context.id !== undefined) {
+      const user = await User.findOneByOrFail({ id: context.id });
+      return { email: user.email, role: user.role, isLoggedIn: true };
+    } else {
+      return { isLoggedIn: false };
+    }
   }
 }
 

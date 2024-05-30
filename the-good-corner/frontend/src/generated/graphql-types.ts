@@ -90,6 +90,7 @@ export type Query = {
   getAllTags: Array<Tag>;
   login: Scalars['String']['output'];
   resetDB: Scalars['String']['output'];
+  whoAmI: UserInfo;
 };
 
 
@@ -113,6 +114,13 @@ export type User = {
   __typename?: 'User';
   ads: Array<Ad>;
   email: Scalars['String']['output'];
+};
+
+export type UserInfo = {
+  __typename?: 'UserInfo';
+  email?: Maybe<Scalars['String']['output']>;
+  isLoggedIn: Scalars['Boolean']['output'];
+  role?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreateNewUserMutationVariables = Exact<{
@@ -168,6 +176,11 @@ export type GetAllFlaggedAdsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllFlaggedAdsQuery = { __typename?: 'Query', getAllFlaggedAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, price: number, ville: string, imgUrl: string, owner: { __typename?: 'User', email: string } }> };
+
+export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'UserInfo', email?: string | null, isLoggedIn: boolean, role?: string | null } };
 
 
 export const CreateNewUserDocument = gql`
@@ -473,3 +486,44 @@ export type GetAllFlaggedAdsQueryHookResult = ReturnType<typeof useGetAllFlagged
 export type GetAllFlaggedAdsLazyQueryHookResult = ReturnType<typeof useGetAllFlaggedAdsLazyQuery>;
 export type GetAllFlaggedAdsSuspenseQueryHookResult = ReturnType<typeof useGetAllFlaggedAdsSuspenseQuery>;
 export type GetAllFlaggedAdsQueryResult = Apollo.QueryResult<GetAllFlaggedAdsQuery, GetAllFlaggedAdsQueryVariables>;
+export const WhoAmIDocument = gql`
+    query WhoAmI {
+  whoAmI {
+    email
+    isLoggedIn
+    role
+  }
+}
+    `;
+
+/**
+ * __useWhoAmIQuery__
+ *
+ * To run a query within a React component, call `useWhoAmIQuery` and pass it any options that fit your needs.
+ * When your component renders, `useWhoAmIQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWhoAmIQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useWhoAmIQuery(baseOptions?: Apollo.QueryHookOptions<WhoAmIQuery, WhoAmIQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<WhoAmIQuery, WhoAmIQueryVariables>(WhoAmIDocument, options);
+      }
+export function useWhoAmILazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WhoAmIQuery, WhoAmIQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<WhoAmIQuery, WhoAmIQueryVariables>(WhoAmIDocument, options);
+        }
+export function useWhoAmISuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<WhoAmIQuery, WhoAmIQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<WhoAmIQuery, WhoAmIQueryVariables>(WhoAmIDocument, options);
+        }
+export type WhoAmIQueryHookResult = ReturnType<typeof useWhoAmIQuery>;
+export type WhoAmILazyQueryHookResult = ReturnType<typeof useWhoAmILazyQuery>;
+export type WhoAmISuspenseQueryHookResult = ReturnType<typeof useWhoAmISuspenseQuery>;
+export type WhoAmIQueryResult = Apollo.QueryResult<WhoAmIQuery, WhoAmIQueryVariables>;

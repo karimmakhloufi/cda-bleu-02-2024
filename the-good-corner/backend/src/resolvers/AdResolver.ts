@@ -12,6 +12,7 @@ import {
   Resolver,
 } from "type-graphql";
 import { Tag } from "../entities/tag";
+import { Context } from "src";
 
 @InputType()
 class NewAdInput implements Partial<Ad> {
@@ -63,7 +64,10 @@ class AdResolver {
 
   @Authorized()
   @Mutation(() => Ad)
-  async createNewAd(@Ctx() context: any, @Arg("data") newAdData: NewAdInput) {
+  async createNewAd(
+    @Ctx() context: Context,
+    @Arg("data") newAdData: NewAdInput
+  ) {
     const resultFromSave = await Ad.save({
       ...newAdData,
       owner: { id: context.id },

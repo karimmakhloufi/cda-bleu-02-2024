@@ -11,6 +11,12 @@ import TagResolver from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
 import DevResolver from "./resolvers/DevResolver";
 
+export type Context = {
+  id: number;
+  email: string;
+  role: string;
+};
+
 const start = async () => {
   await dataSource.initialize();
   const schema = await buildSchema({
@@ -21,7 +27,7 @@ const start = async () => {
       TagResolver,
       UserResolver,
     ],
-    authChecker: ({ context }, roles) => {
+    authChecker: ({ context }: { context: Context }, roles) => {
       console.log("roles for this query/mutation ", roles);
       // Check user
       if (!context.email) {
