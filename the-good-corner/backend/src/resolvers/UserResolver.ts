@@ -51,9 +51,20 @@ class UserResolver {
     @Arg("password") password: string
   ) {
     const hashedPassword = await argon2.hash(password);
-    await User.save({ email: email, hashedPassword: hashedPassword });
+    const userFromDB = await User.save({
+      email: email,
+      hashedPassword: hashedPassword,
+    });
+    console.log("user has just been saved", userFromDB);
+    if (process.env.JWT_SECRET_KEY === undefined) {
+      throw new Error("NO JWT SECRET KEY DEFINED");
+    }
+    const token = jwt.sign(
+      { id: userFromDB.id, email: userFromDB.email, role: userFromDB.role },
+      process.env.JWT_SECRET_KEY
+    );
 
-    return "User was created";
+    return token;
   }
 
   @Query(() => UserInfo)

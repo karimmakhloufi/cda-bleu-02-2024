@@ -1,7 +1,12 @@
-import { useCreateNewUserMutation } from "@/generated/graphql-types";
+import { useRouter } from "next/router";
+import { UserContext } from "../components/Layout";
+import { useCreateNewUserMutation } from "../generated/graphql-types";
+import { useContext } from "react";
 
 const Register = () => {
   const [createUser] = useCreateNewUserMutation();
+  const userInfo = useContext(UserContext);
+  const router = useRouter();
   return (
     <form
       onSubmit={async (e) => {
@@ -14,8 +19,11 @@ const Register = () => {
         // console.log("formjson", formJson);
         createUser({
           variables: formJson,
-          onCompleted: () => {
+          onCompleted: (data) => {
             console.log("completed");
+            localStorage.setItem("token", data.createUser);
+            userInfo.refetch();
+            router.push("/");
           },
           onError: (err) => {
             console.log("error ", err);
