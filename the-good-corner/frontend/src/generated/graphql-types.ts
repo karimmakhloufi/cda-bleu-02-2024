@@ -89,6 +89,7 @@ export type Query = {
   getAllFlaggedAds: Array<Ad>;
   getAllTags: Array<Tag>;
   login: Scalars['String']['output'];
+  logout: Scalars['String']['output'];
   resetDB: Scalars['String']['output'];
   whoAmI: UserInfo;
 };
@@ -181,6 +182,11 @@ export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'UserInfo', email?: string | null, isLoggedIn: boolean, role?: string | null } };
+
+export type LogoutQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutQuery = { __typename?: 'Query', logout: string };
 
 
 export const CreateNewUserDocument = gql`
@@ -527,3 +533,40 @@ export type WhoAmIQueryHookResult = ReturnType<typeof useWhoAmIQuery>;
 export type WhoAmILazyQueryHookResult = ReturnType<typeof useWhoAmILazyQuery>;
 export type WhoAmISuspenseQueryHookResult = ReturnType<typeof useWhoAmISuspenseQuery>;
 export type WhoAmIQueryResult = Apollo.QueryResult<WhoAmIQuery, WhoAmIQueryVariables>;
+export const LogoutDocument = gql`
+    query Logout {
+  logout
+}
+    `;
+
+/**
+ * __useLogoutQuery__
+ *
+ * To run a query within a React component, call `useLogoutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLogoutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLogoutQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutQuery(baseOptions?: Apollo.QueryHookOptions<LogoutQuery, LogoutQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LogoutQuery, LogoutQueryVariables>(LogoutDocument, options);
+      }
+export function useLogoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LogoutQuery, LogoutQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LogoutQuery, LogoutQueryVariables>(LogoutDocument, options);
+        }
+export function useLogoutSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<LogoutQuery, LogoutQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LogoutQuery, LogoutQueryVariables>(LogoutDocument, options);
+        }
+export type LogoutQueryHookResult = ReturnType<typeof useLogoutQuery>;
+export type LogoutLazyQueryHookResult = ReturnType<typeof useLogoutLazyQuery>;
+export type LogoutSuspenseQueryHookResult = ReturnType<typeof useLogoutSuspenseQuery>;
+export type LogoutQueryResult = Apollo.QueryResult<LogoutQuery, LogoutQueryVariables>;

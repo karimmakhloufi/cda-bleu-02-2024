@@ -60,3 +60,9 @@ export const WHO_AM_I = gql`
     }
   }
 `;
+
+export const LOGOUT = gql`
+  query Logout {
+    logout
+  }
+`;

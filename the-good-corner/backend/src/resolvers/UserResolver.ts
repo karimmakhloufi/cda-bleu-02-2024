@@ -16,6 +16,11 @@ class UserInfo {
 
 class UserResolver {
   @Query(() => String)
+  async logout(@Ctx() context: any) {
+    context.res.setHeader("Set-Cookie", `token=;Max-Age=0`);
+    return "Logged out";
+  }
+  @Query(() => String)
   async login(
     @Arg("email") emailFromClient: string,
     @Arg("password") passwordFromClient: string,
@@ -37,7 +42,7 @@ class UserResolver {
           { id: userFromDB.id, email: userFromDB.email, role: userFromDB.role },
           process.env.JWT_SECRET_KEY
         );
-        context.res.setHeader("Set-Cookie", `token=${token}`);
+        context.res.setHeader("Set-Cookie", `token=${token}; Secure; HttpOnly`);
         return "Login accepted";
       } else {
         throw new Error("Bad Login");

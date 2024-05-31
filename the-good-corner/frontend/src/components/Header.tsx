@@ -4,10 +4,12 @@ import NavBar from "./NavBar";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { UserContext } from "./Layout";
+import { useLogoutLazyQuery } from "@/generated/graphql-types";
 
 const Header = () => {
   const userInfo = useContext(UserContext);
   const router = useRouter();
+  const [logout] = useLogoutLazyQuery();
   return (
     <header className={styles.header}>
       <div className="main-menu">
@@ -61,6 +63,19 @@ const Header = () => {
           </Link>
         )}
         {userInfo.email ? <span>{userInfo.email}</span> : null}
+        {userInfo.isLoggedIn ? (
+          <button
+            onClick={() => {
+              logout({
+                onCompleted: () => {
+                  userInfo.refetch();
+                },
+              });
+            }}
+          >
+            Logout
+          </button>
+        ) : null}
       </div>
       <NavBar />
     </header>
