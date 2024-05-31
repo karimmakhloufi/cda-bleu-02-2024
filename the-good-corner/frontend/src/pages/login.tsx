@@ -19,8 +19,7 @@ const Login = () => {
         // console.log("formjson", formJson);
         login({
           variables: formJson,
-          onCompleted: (data) => {
-            localStorage.setItem("token", data.login);
+          onCompleted: () => {
             userInfo.refetch();
             router.push("/");
           },

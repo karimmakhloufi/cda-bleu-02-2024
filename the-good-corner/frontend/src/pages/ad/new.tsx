@@ -1,9 +1,10 @@
 import { GET_ALL_ADS } from "../../components/RecentAds";
 import { gql, useMutation } from "@apollo/client";
 import { useGetAllCategoriesAndTagsQuery } from "../../generated/graphql-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { UserContext } from "../../components/Layout";
 
 const CREATE_NEW_AD = gql`
   mutation Mutation($data: NewAdInput!) {
@@ -15,10 +16,11 @@ const CREATE_NEW_AD = gql`
 
 const NewAd = () => {
   const router = useRouter();
-  console.log("localstorage token ", localStorage.getItem("token"));
-  if (localStorage.getItem("token") === null) {
+  const userInfo = useContext(UserContext);
+  if (userInfo.isLoggedIn === false) {
     router.push("/login");
   }
+
   const [file, setFile] = useState<File>();
   const [imageURL, setImageURL] = useState<string>();
   const { loading, error, data } = useGetAllCategoriesAndTagsQuery();
