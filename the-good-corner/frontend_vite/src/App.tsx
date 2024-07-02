@@ -2,6 +2,8 @@ import { Routes, Route, Outlet, Link } from "react-router-dom";
 import "./App.css";
 import { useWhoAmIQuery } from "./generated/graphql-types";
 import { createContext } from "react";
+import HomePage from "./pages/Home";
+import NewAd from "./pages/NewAd";
 
 export const UserContext = createContext({
   isLoggedIn: false,
@@ -31,11 +33,9 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+            <Route index element={<HomePage />} />
+            <Route path="new" element={<NewAd />} />
             <Route path="about" element={<About />} />
-            <Route path="dashboard" element={<Dashboard />} />
-
-            <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
       </UserContext.Provider>
@@ -52,13 +52,10 @@ function Layout() {
             <Link to="/">Home</Link>
           </li>
           <li>
+            <Link to="/new">New Ad</Link>
+          </li>
+          <li>
             <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/nothing-here">Nothing Here</Link>
           </li>
         </ul>
       </nav>
@@ -68,15 +65,9 @@ function Layout() {
       {/* An <Outlet> renders whatever child route is currently active,
           so you can think about this <Outlet> as a placeholder for
           the child routes we defined above. */}
-      <Outlet />
-    </div>
-  );
-}
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
+      <main className="main-content">
+        <Outlet />
+      </main>
     </div>
   );
 }
@@ -84,26 +75,8 @@ function Home() {
 function About() {
   return (
     <div>
-      <h2>About</h2>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-    </div>
-  );
-}
-
-function NoMatch() {
-  return (
-    <div>
-      <h2>Nothing to see here!</h2>
-      <p>
-        <Link to="/">Go to the home page</Link>
-      </p>
+      <h2>About Page</h2>
+      <p>Made with ❤️ with React </p>
     </div>
   );
 }

@@ -13,18 +13,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  frontend:
-    build: ./frontend
-    volumes:
-      - ./frontend/src:/app/src
-    depends_on:
-      backend:
-        condition: service_healthy
-    healthcheck:
-      test: "curl --fail --request GET --url 'http://localhost:3000' || exit 1"
-      interval: 1s
-      timeout: 2s
-      retries: 100
   frontend_vite:
     build: ./frontend_vite
     volumes:
@@ -55,7 +43,7 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-      frontend:
+      frontend_vite:
         condition: service_healthy
       img:
         condition: service_healthy
