@@ -25,6 +25,18 @@ services:
       interval: 1s
       timeout: 2s
       retries: 100
+  frontend_vite:
+    build: ./frontend_vite
+    volumes:
+      - ./frontend_vite/src:/app/src
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --request GET --url 'http://localhost:5173' || exit 1"
+      interval: 1s
+      timeout: 2s
+      retries: 100
   db:
     image: postgres
     healthcheck:
@@ -49,6 +61,7 @@ services:
         condition: service_healthy
     ports:
       - 7000:80
+      - 5174:5174
   img:
     build: ./img
     healthcheck:
