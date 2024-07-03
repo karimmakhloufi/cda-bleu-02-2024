@@ -49,7 +49,6 @@ services:
         condition: service_healthy
     ports:
       - 7000:80
-      - 5174:5174
   img:
     build: ./img
     healthcheck:
