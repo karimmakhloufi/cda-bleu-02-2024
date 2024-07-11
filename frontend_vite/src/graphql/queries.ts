@@ -66,3 +66,18 @@ export const LOGOUT = gql`
     logout
   }
 `;
+
+export const GET_ALL_ADS = gql`
+  query GetAllAds {
+    getAllAds {
+      id
+      title
+      description
+      owner {
+        email
+      }
+      ville
+      imgUrl
+    }
+  }
+`;

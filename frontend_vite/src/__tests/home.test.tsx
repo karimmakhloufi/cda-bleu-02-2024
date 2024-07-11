@@ -2,7 +2,8 @@ import "@testing-library/jest-dom";
 import { expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import Home, { GET_ALL_ADS } from "../pages/Home";
+import Home from "../pages/Home";
+import { GET_ALL_ADS } from "../graphql/queries";
 
 const adMock = {
   delay: 30,
