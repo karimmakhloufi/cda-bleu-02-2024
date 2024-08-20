@@ -1,0 +1,19 @@
+name: frontend_tests
+
+on: push
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Go to the right folder
+        run: cd frontent_vitest
+
+      - name: install dependencies
+        run: npm install
+
+      - name: run unit tests
+        run: npm run test
