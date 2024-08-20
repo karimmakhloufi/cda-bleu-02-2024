@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Go to the right folder
-        run: cd frontend_vitest
+        run: cd frontend_vite
 
       - name: install dependencies
         run: npm install
