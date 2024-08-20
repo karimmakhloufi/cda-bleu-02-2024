@@ -9,11 +9,5 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
 
-      - name: Go to the right folder
-        run: cd frontend_vite
-
-      - name: install dependencies
-        run: npm install
-
-      - name: run unit tests
-        run: npm run test
+      - name: Go to the right folder, install deps and run test
+        run: cd frontend_vite && npm install && npm run test
