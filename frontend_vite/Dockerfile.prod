@@ -26,10 +26,6 @@ WORKDIR /app
 
 COPY --from=builder /app/dist /app/dist
 
-COPY package.json package.json
-
-RUN npm install --production
-
 RUN npm install -g http-server 
 
 CMD http-server -p 5173 /app/dist
