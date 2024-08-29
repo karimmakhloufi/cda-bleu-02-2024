@@ -1,0 +1,19 @@
+{
+  "name": "e2e_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/client": "^3.11.5",
+    "ts-jest": "^29.2.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12"
+  }
+}
