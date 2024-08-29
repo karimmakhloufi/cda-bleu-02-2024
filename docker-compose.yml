@@ -34,6 +34,8 @@ services:
       retries: 100
     env_file:
       - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   adminer:
     image: adminer
   apigateway:
@@ -56,3 +58,6 @@ services:
       interval: 1s
       timeout: 2s
       retries: 100
+
+volumes:
+  pgdata:
