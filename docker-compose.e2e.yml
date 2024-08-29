@@ -28,8 +28,8 @@ services:
       interval: 1s
       timeout: 2s
       retries: 100
-    environment:
-      POSTGRES_PASSWORD: example
+    env_file:
+      - .env
   adminer:
     image: adminer
   apigateway:
