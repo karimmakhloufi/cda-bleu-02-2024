@@ -9,6 +9,9 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: cp .env.exemple .env
+
       - name: Launch the app
         run: docker compose up --build
 
