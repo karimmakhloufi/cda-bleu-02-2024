@@ -1,4 +1,4 @@
-name: frontend_tests
+name: zap_security_test
 
 on: push
 
