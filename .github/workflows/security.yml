@@ -1,0 +1,18 @@
+name: frontend_tests
+
+on: push
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Launch the app
+        run: docker compose up --build
+
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.11.0
+        with:
+        target: "http://localhost:7000"
