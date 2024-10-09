@@ -54,6 +54,7 @@ services:
       retries: 100
   zap:
     build: ./zap
+    user: "${UID}:${GID}"
     volumes:
       - ./zap/wrk:/zap/wrk
     depends_on:
