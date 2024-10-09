@@ -55,7 +55,7 @@ services:
   zap:
     image: zaproxy/zap-stable
     user: "${UID}:${GID}"
-    command: "zap-full-scan.py -t http://apigateway -r report.html"
+    command: "zap-full-scan.py -t http://apigateway -r index.html"
     volumes:
       - ./zap/wrk:/zap/wrk
     depends_on:
