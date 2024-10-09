@@ -53,11 +53,10 @@ services:
       timeout: 2s
       retries: 100
   zap:
-    image: zaproxy/zap-stable
-    command: "zap-full-scan.py -t http://apigateway -r report.html"
+    build: ./zap
     volumes:
-      - zapvolume:/zap/wrk/
+      - type: bind
+        source: ./zap/wrk
+        target: /zap/wrk
     depends_on:
       - apigateway
-volumes:
-  zapvolume:
