@@ -56,6 +56,6 @@ services:
     image: zaproxy/zap-stable
     command: "zap-full-scan.py -t http://apigateway -r report.html"
     volumes:
-      - ./zap/wrk:/zap/wrk:z
+      - ./zap/wrk/report.html:/zap/wrk/report.html
     depends_on:
       - apigateway
