@@ -19,7 +19,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: zap-report
-          path: zap/wrk/report.html
+          path: zap/wrk/index.html
 
   upload-report:
     needs: [main]
@@ -40,7 +40,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./zap/wrk # from what folder to take files. It takes only contents
+          publish_dir: zap/wrk # from what folder to take files. It takes only contents
           destination_dir: ${{ steps.timestampid.outputs.timestamp }} # a sub-directory where to publish to avoid overwriting other reports
 
       - name: Write URL in summary
