@@ -12,10 +12,10 @@ jobs:
       - name: Create .env file
         run: cp .env.exemple .env
 
-      - name: Launch the app
-        run: docker compose up --build --exit-code-from apigateway
+      - name: Launch the security test
+        run: npm run zap
 
-      - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.11.0
+      - uses: actions/upload-artifact@v4
         with:
-          target: "http://localhost:7000"
+          name: zap-report
+          path: zap/wrk/report.html
