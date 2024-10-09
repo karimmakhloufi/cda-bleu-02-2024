@@ -55,8 +55,6 @@ services:
   zap:
     build: ./zap
     volumes:
-      - type: bind
-        source: ./zap/wrk
-        target: /zap/wrk
+      - ./zap/wrk:/zap/wrk
     depends_on:
       - apigateway
