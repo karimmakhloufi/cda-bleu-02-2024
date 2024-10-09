@@ -25,23 +25,9 @@ jobs:
     needs: [main]
     runs-on: ubuntu-latest
 
-    outputs:
-      timestamp: ${{ steps.timestampid.outputs.timestamp }}
-
     steps:
-      - name: Set a timestamp
-        id: timestampid
-        # this will store current time with UTC in outputs.timestamp (eg of value: 20231028_233147Z)
-        run: echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> "$GITHUB_OUTPUT"
-
-      - name: Push the new files to github pages
-        # This will create a separate branch called gh-pages where it will store only reports. And from where it will push all future changes
-        # to github pages. Having a separate branch will keep the reports and changes commits separate to your main/master
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: zap/wrk/ # from what folder to take files. It takes only contents
-          destination_dir: ${{ steps.timestampid.outputs.timestamp }} # a sub-directory where to publish to avoid overwriting other reports
-
-      - name: Write URL in summary
-        run: echo "### Test results (link available after 20 secs) - https://${{ github.repository_owner }}.github.io/zap-reports/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
+          publish_dir: ./zap/wrk
