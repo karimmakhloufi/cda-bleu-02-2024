@@ -11,6 +11,7 @@ import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
 import DevResolver from "./resolvers/DevResolver";
+import { Category } from "./entities/category";
 
 export type Context = {
   id: number;
@@ -20,6 +21,10 @@ export type Context = {
 
 const start = async () => {
   await dataSource.initialize();
+  const categories = await Category.find();
+  if (categories.length === 0) {
+    await Category.save({ name: "Divers" });
+  }
   const schema = await buildSchema({
     resolvers: [
       DevResolver,
