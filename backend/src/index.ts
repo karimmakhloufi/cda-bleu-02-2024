@@ -6,12 +6,15 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import jwt from "jsonwebtoken";
 import setCookieParser from "set-cookie-parser";
+import argon2 from "argon2";
 import { dataSource } from "./config/db";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
 import DevResolver from "./resolvers/DevResolver";
 import { Category } from "./entities/category";
+import { Ad } from "./entities/ad";
+import { User } from "./entities/user";
 
 export type Context = {
   id: number;
@@ -21,9 +24,27 @@ export type Context = {
 
 const start = async () => {
   await dataSource.initialize();
+  const users = await User.find();
+  if (users.length === 0) {
+    await User.save({
+      email: "john.doe@gmail.com",
+      hashedPassword: await argon2.hash("test"),
+    });
+  }
   const categories = await Category.find();
   if (categories.length === 0) {
     await Category.save({ name: "Divers" });
+  }
+  const ads = await Ad.find();
+  if (ads.length === 0) {
+    await Ad.save({
+      category: { id: 1 },
+      title: "lunettes",
+      description: "Super lunettes",
+      owner: { id: 1 },
+      ville: "Paris",
+      price: 100,
+    });
   }
   const schema = await buildSchema({
     resolvers: [
